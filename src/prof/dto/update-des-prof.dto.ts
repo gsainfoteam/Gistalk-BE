@@ -1,4 +1,3 @@
-export class UpdateProfDto 
-{
-    readonly prof_name : string;
+export class UpdateProfDto {
+  readonly prof_name: string;
 }

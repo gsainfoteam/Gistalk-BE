@@ -1,4 +1,3 @@
-export class CreateDate 
-{
-    readonly date : string;
+export class CreateDate {
+  readonly date: string;
 }

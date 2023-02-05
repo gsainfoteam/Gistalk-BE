@@ -1,33 +1,44 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Lecture } from './lecture/entity/lecture.entity';
-import { LectureController } from './lecture/lecture.controller';
 import { LectureModule } from './lecture/lecture.module';
-import { LectureService } from './lecture/lecture.service';
-import { ProfController } from './prof/prof.controller';
-import { ProfService } from './prof/prof.service';
 import { ProfModule } from './prof/prof.module';
 import { Prof } from './prof/entity/prof.entity';
-import { RecordController } from './record/record.controller';
-import { RecordService } from './record/record.service';
 import { RecordModule } from './record/record.module';
 import { Record } from './record/entity/record.entity';
 import { ScoringModule } from './scoring/scoring.module';
 import { Scoring } from './scoring/entity/scoring.entity';
 import { DateModule } from './date/date.module';
 import { Lecture_Date } from './date/entity/date.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import * as Joi from 'joi';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '12345678',
-      database: 'gistalk',
-      entities: [Lecture, Prof, Record, Scoring, Lecture_Date],
-      synchronize: true,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      validationSchema: Joi.object({
+        DATABASE_HOST: Joi.string().required(),
+        DATABASE_USER: Joi.string().required(),
+        DATABASE_DBNAME: Joi.string().required(),
+        DATABASE_PASSWORD: Joi.string().required(),
+      }),
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        return {
+          type: 'mysql',
+          host: configService.get('DATABASE_HOST'),
+          port: 3306,
+          username: configService.get('DATABASE_USER'),
+          password: configService.get('DATABASE_PASSWORD'),
+          database: configService.get('DATABASE_DBNAME'),
+          entities: [Lecture, Prof, Record, Scoring, Lecture_Date],
+          synchronize: false,
+        };
+      },
     }),
     LectureModule,
     ProfModule,

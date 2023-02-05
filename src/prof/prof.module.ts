@@ -7,8 +7,8 @@ import { ProfController } from './prof.controller';
 import { ProfService } from './prof.service';
 
 @Module({
-    imports : [TypeOrmModule.forFeature([Prof, Scoring])],
-    providers: [ProfService],
-    controllers: [ProfController]
+  imports: [TypeOrmModule.forFeature([Prof, Scoring])],
+  providers: [ProfService],
+  controllers: [ProfController],
 })
 export class ProfModule {}

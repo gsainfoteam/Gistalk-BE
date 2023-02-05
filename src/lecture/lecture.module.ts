@@ -10,6 +10,6 @@ import { LectureService } from './lecture.service';
 @Module({
   imports: [TypeOrmModule.forFeature([Lecture, Prof, Lecture_Date])],
   providers: [LectureService],
-  controllers: [LectureController]
+  controllers: [LectureController],
 })
 export class LectureModule {}

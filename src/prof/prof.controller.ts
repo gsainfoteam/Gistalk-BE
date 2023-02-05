@@ -6,24 +6,20 @@ import { ProfService } from './prof.service';
 
 @Controller('profs')
 export class ProfController {
-    constructor(private readonly profService : ProfService) {}
+  constructor(private readonly profService: ProfService) {}
 
+  @Get('all')
+  getAll(): Promise<Prof[]> {
+    return this.profService.getAll();
+  }
 
-    @Get('all')
-    getAll(): Promise<Prof[]>
-    {
-        return this.profService.getAll();
-    }
+  @Get('get_:id')
+  getProfInfo(@Param('id') id: number): Promise<any> {
+    return this.profService.getProfInfo(id);
+  }
 
-    @Get('get_:id')
-    getProfInfo(@Param('id') id : number): Promise<any>
-    {
-        return this.profService.getProfInfo(id);
-    }
-
-    @Post("add")
-    createProf(@Body() profData : CreateProfDto): Promise<Prof>
-    {
-        return this.profService.createProf(profData);
-    }
+  @Post('add')
+  createProf(@Body() profData: CreateProfDto): Promise<Prof> {
+    return this.profService.createProf(profData);
+  }
 }

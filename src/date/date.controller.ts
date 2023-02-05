@@ -4,11 +4,10 @@ import { CreateDate } from './dto/create-date.dto';
 
 @Controller('date')
 export class DateController {
-    constructor(private dateservice : DateService) {}
+  constructor(private dateservice: DateService) {}
 
-    @Post('/add')
-    CreateDate(@Body() data : CreateDate): Promise<any>
-    {
-        return this.dateservice.CreateDate(data);
-    }
+  @Post('/add')
+  CreateDate(@Body() data: CreateDate): Promise<any> {
+    return this.dateservice.CreateDate(data);
+  }
 }

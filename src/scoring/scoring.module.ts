@@ -7,8 +7,8 @@ import { ScoringController } from './scoring.controller';
 import { ScoringService } from './scoring.service';
 
 @Module({
-  imports : [TypeOrmModule.forFeature([Scoring, Lecture])],
+  imports: [TypeOrmModule.forFeature([Scoring, Lecture])],
   controllers: [ScoringController],
-  providers: [ScoringService]
+  providers: [ScoringService],
 })
 export class ScoringModule {}

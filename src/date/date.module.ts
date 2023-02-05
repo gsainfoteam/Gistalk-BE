@@ -5,8 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Lecture_Date } from './entity/date.entity';
 
 @Module({
-  imports : [TypeOrmModule.forFeature([Lecture_Date])],
+  imports: [TypeOrmModule.forFeature([Lecture_Date])],
   providers: [DateService],
-  controllers: [DateController]
+  controllers: [DateController],
 })
 export class DateModule {}
