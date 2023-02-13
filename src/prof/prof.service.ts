@@ -81,4 +81,9 @@ export class ProfService {
       );
     }
   }
+
+  async DeleteProf(id : number): Promise<void>
+  {
+    const result = await this.profRepository.delete(id);
+  }
 }
