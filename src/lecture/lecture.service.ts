@@ -118,4 +118,9 @@ export class LectureService {
   async remove(id: number): Promise<void> {
     await this.lectureRepository.delete(id);
   }
+
+  async DeleteLecture(id : number): Promise<void>
+  {
+    const result = await this.lectureRepository.delete(id);
+  }
 }

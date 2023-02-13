@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { CreateProfDto } from './dto/create-prof.dto';
 import { UpdateProfDto } from './dto/update-des-prof.dto';
 import { Prof } from './entity/prof.entity';
@@ -21,5 +21,11 @@ export class ProfController {
   @Post('add')
   createProf(@Body() profData: CreateProfDto): Promise<Prof> {
     return this.profService.createProf(profData);
+  }
+
+  @Delete("delete:id")
+  DeleteProf(@Param('id') id : number): Promise<any>
+  {
+    return this.profService.DeleteProf(id);
   }
 }
