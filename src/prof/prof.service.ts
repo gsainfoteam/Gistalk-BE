@@ -23,6 +23,7 @@ export class ProfService {
   async getAll(): Promise<Prof[]> {
     return this.profRepository.find({
       select: {
+        id: true,
         prof_name: true,
       },
     });
