@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { filter } from 'rxjs';
-import { Lecture_Date } from 'src/date/entity/date.entity';
 import { Prof } from 'src/prof/entity/prof.entity';
 import { Record } from 'src/record/entity/record.entity';
 import { Repository } from 'typeorm';
@@ -20,8 +19,6 @@ export class LectureService {
     private lectureRepository: Repository<Lecture>,
     @InjectRepository(Prof)
     private profRepository: Repository<Prof>,
-    @InjectRepository(Lecture_Date)
-    private lecture_dateRepository: Repository<Lecture_Date>,
   ) {}
 
   //강좌별 강의 평가 조회 API
@@ -76,29 +73,6 @@ export class LectureService {
     } else {
       throw new NotFoundException(`해당되는 교수명(${prof_name}) 가 없습니다.`);
     }
-  }
-
-  //강의 개설일자 업데이트 //1/30일 모르겠다;; 어떻게 해야할지 감이 안 잡힘
-  async updatelecture(lecture_id: number, date: any) {
-    const lectureDate = new Lecture_Date();
-    lectureDate.date = '22학년도';
-    await this.lecture_dateRepository.manager.save(lectureDate);
-
-    const lecture = new Lecture();
-    lecture.lecture_code = '1234';
-    lecture.lecture_name = '12344';
-    lecture.division_field = '1234';
-    lecture.test_date = '!23';
-    lecture.prof = await this.profRepository.findOne({
-      relations: {
-        lectures: true,
-      },
-      where: {
-        prof_name: '김민기',
-      },
-    });
-    lecture.dates = [lectureDate];
-    await this.lectureRepository.manager.save(lecture);
   }
 
   // 전공 리스트로 바꿔주는 함수

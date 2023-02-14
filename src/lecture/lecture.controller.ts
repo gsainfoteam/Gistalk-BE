@@ -20,11 +20,6 @@ export class LectureController {
     return this.lectureService.createProfLecture(lectureData);
   }
 
-  @Post('/update_:lecture_id')
-  updateLecture(@Param('lecture_id') lecture_id: number, @Body() Data: any) {
-    return this.lectureService.updatelecture(lecture_id, Data);
-  }
-
   @Delete("delete:id")
   DeleteLecture(@Param('id') id : number): Promise<any>
   {

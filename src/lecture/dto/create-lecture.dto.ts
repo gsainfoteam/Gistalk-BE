@@ -6,6 +6,4 @@ export class CreateLectureDto {
   readonly division_field: string;
 
   readonly prof_name: string;
-
-  readonly lecture_date: string;
 }

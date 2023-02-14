@@ -8,8 +8,6 @@ import { RecordModule } from './record/record.module';
 import { Record } from './record/entity/record.entity';
 import { ScoringModule } from './scoring/scoring.module';
 import { Scoring } from './scoring/entity/scoring.entity';
-import { DateModule } from './date/date.module';
-import { Lecture_Date } from './date/entity/date.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 
@@ -35,7 +33,7 @@ import * as Joi from 'joi';
           username: configService.get('DATABASE_USER'),
           password: configService.get('DATABASE_PASSWORD'),
           database: configService.get('DATABASE_DBNAME'),
-          entities: [Lecture, Prof, Record, Scoring, Lecture_Date],
+          entities: [Lecture, Prof, Record, Scoring],
           synchronize: false,
         };
       },
@@ -44,7 +42,6 @@ import * as Joi from 'joi';
     ProfModule,
     RecordModule,
     ScoringModule,
-    DateModule,
   ],
   controllers: [],
   providers: [],
