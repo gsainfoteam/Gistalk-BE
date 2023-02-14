@@ -1,4 +1,3 @@
-import { Lecture_Date } from 'src/date/entity/date.entity';
 import { Prof } from 'src/prof/entity/prof.entity';
 import { Record } from 'src/record/entity/record.entity';
 import { Scoring } from 'src/scoring/entity/scoring.entity';
@@ -10,7 +9,6 @@ import {
   OneToMany,
   JoinColumn,
   OneToOne,
-  ManyToMany,
 } from 'typeorm';
 
 @Entity()
@@ -39,9 +37,5 @@ export class Lecture {
 
   @OneToOne(() => Scoring, (socring) => socring.lecture)
   scoring: Scoring;
-
-  @ManyToMany(() => Lecture_Date, (lecture_date) => lecture_date.lectures) // 1/30
-  dates: Lecture_Date[];
 }
-
 // prof => prof.prof_name,
