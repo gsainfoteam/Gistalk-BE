@@ -48,7 +48,6 @@ export class ProfService {
           id: true,
           lectures: true,
           prof_name: true,
-          prof_field: true,
         },
         relations: {
           lectures: true,
@@ -66,13 +65,12 @@ export class ProfService {
 
   //교수 추가 API
   async createProf(createProfDto: CreateProfDto): Promise<Prof> {
-    const { prof_name, prof_field } = createProfDto;
+    const { prof_name } = createProfDto;
     const found = await this.getProfName(prof_name);
 
     if (!found) {
       const prof = await this.profRepository.create({
         prof_name,
-        prof_field,
       });
       await this.profRepository.save(prof);
       return prof;
