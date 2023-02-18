@@ -18,9 +18,6 @@ export class Prof {
   @Column({ unique: true })
   prof_name: string;
 
-  @Column({ default: 'default' })
-  prof_field: string; //소속
-
   @OneToMany((Type) => Lecture, (lecture) => lecture.prof, { eager: true }) //eager
   lectures: Lecture[];
 }
