@@ -34,7 +34,7 @@ import * as Joi from 'joi';
           password: configService.get('DATABASE_PASSWORD'),
           database: configService.get('DATABASE_DBNAME'),
           entities: [Lecture, Prof, Record, Scoring],
-          synchronize: false, //when push change false
+          synchronize: true, //when push change false
         };
       },
     }),
