@@ -22,9 +22,6 @@ export class Lecture {
   @Column()
   lecture_name: string;
 
-  @Column()
-  division_field: string; //소속
-
   @ManyToOne((Type) => Prof, { cascade: true })
   @JoinColumn()
   prof: Prof;
