@@ -21,3 +21,4 @@ export class Prof {
   @OneToMany((Type) => Lecture, (lecture) => lecture.prof, { eager: true }) //eager
   lectures: Lecture[];
 }
+ 
