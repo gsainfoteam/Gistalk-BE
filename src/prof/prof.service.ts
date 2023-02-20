@@ -1,4 +1,5 @@
 import {
+  All,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -6,7 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { LectureService } from 'src/lecture/lecture.service';
 import { Scoring } from 'src/scoring/entity/scoring.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { CreateProfDto } from './dto/create-prof.dto';
 import { UpdateProfDto } from './dto/update-des-prof.dto';
 import { Prof } from './entity/prof.entity';
