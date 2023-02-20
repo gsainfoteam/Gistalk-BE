@@ -49,7 +49,7 @@ export class LectureService {
     createLectureDto: CreateLectureDto,
   ): Promise<Lecture> {
     //Promise<Lecture>
-    const { lecture_name, lecture_code, division_field, prof_name } =
+    const { lecture_name, lecture_code, prof_name } =
       createLectureDto;
 
     const found = await this.profRepository.findOneBy({ prof_name: prof_name });
@@ -57,7 +57,6 @@ export class LectureService {
       const lecture = new Lecture();
       lecture.lecture_name = lecture_name;
       lecture.lecture_code = await this.toListForm(lecture_code);
-      lecture.division_field = await this.toListForm(division_field);
       lecture.prof = await this.profRepository.findOne({
         //porf inject
         relations: {
