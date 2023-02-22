@@ -52,23 +52,54 @@ export class LectureService {
     const { lecture_name, lecture_code, prof_name } =
       createLectureDto;
 
+
+    const lecture_code1 = await this.toListForm(lecture_code)
+
     const found = await this.profRepository.findOneBy({ prof_name: prof_name });
-    if (found) {
-      const lecture = new Lecture();
-      lecture.lecture_name = lecture_name;
-      lecture.lecture_code = await this.toListForm(lecture_code);
-      lecture.prof = await this.profRepository.findOne({
-        //porf inject
-        relations: {
-          lectures: true,
+
+    const lecture_found = await this.lectureRepository.findOne
+      ({
+        select : {
+          id : true,
+          lecture_code : true,
+          lecture_name : true,
         },
-        where: {
-          prof_name: prof_name,
+        relations : {
+          prof : true
         },
+        where : {
+          lecture_code : await this.toListForm(lecture_code),
+          lecture_name : lecture_name,
+          prof : {
+            prof_name : prof_name
+          }
+        }
       });
 
-      await this.lectureRepository.manager.save(lecture);
-      return lecture;
+    console.log(found)
+    console.log(lecture_found)
+    
+
+    if (found) {
+      if(!lecture_found){
+        const lecture = new Lecture();
+        lecture.lecture_name = lecture_name;
+        lecture.lecture_code = await this.toListForm(lecture_code);
+        lecture.prof = await this.profRepository.findOne({
+          relations: {
+            lectures: true,
+          },
+          where: {
+            prof_name: prof_name,
+          },
+        });
+
+        await this.lectureRepository.manager.save(lecture);
+        return lecture;
+      }
+      else {
+        throw new ConflictException(`이미 등록된 강의(${lecture_name})-교수(${prof_name}) 입니다.`);
+      }
     } else {
       throw new NotFoundException(`해당되는 교수명(${prof_name}) 가 없습니다.`);
     }
