@@ -60,7 +60,6 @@ export class ScoringService {
   async scoring(main_lecture_id: number): Promise<any> {
     const lecture = await this.getLectureInfo(main_lecture_id * 1); //1곱하지말고 parseInt pipe만드는게 좋을듯
     const people = lecture.records.length;
-    console.log('총 평가 인원 ' + people);
     const found = await this.scoringRepository.findOne({
       where: {
         lecture_id: main_lecture_id * 1,
