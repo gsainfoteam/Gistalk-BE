@@ -76,10 +76,6 @@ export class LectureService {
         }
       });
 
-    console.log(found)
-    console.log(lecture_found)
-    
-
     if (found) {
       if(!lecture_found){
         const lecture = new Lecture();
