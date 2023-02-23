@@ -43,6 +43,13 @@ export class LectureService {
     }
   }
 
+  //강의 코드로 강의 아이디 조회 API
+  async getLectureId(lecture_code : string)
+  {
+    const found = await this.lectureRepository.findOneBy({lecture_code : await this.toListForm(lecture_code)})
+    return found
+  }
+
   //강의 추가 API
   //typerom 문서 일대다 연결하는법  중복오류 교수 테이블 따로 만든 상태에서 강의 테이블 생성 시 교수명을 참조키로 가져와야함
   async createProfLecture(
