@@ -1,5 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-import { Prof } from 'src/prof/entity/prof.entity';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { CreateLectureDto } from './dto/create-lecture.dto';
 import { Lecture } from './entity/lecture.entity';
 import { LectureService } from './lecture.service';
@@ -9,9 +8,11 @@ export class LectureController {
   constructor(private readonly lectureService: LectureService) {}
 
   //강의 코드로 강의 아이디 조회 API
-  @Get('getting:lecture_code')
-  getLectureId(@Param('lecture_code') lecture_code: string): Promise<any> {
-    return this.lectureService.getLectureId(lecture_code)
+  @Get('getting')
+  getLectureId(
+    @Query('lecture_code') lecture_code : string,
+    @Query('prof_name') prof_name : string): Promise<any> {
+    return this.lectureService.getLectureId(lecture_code, prof_name);
   }
 
   //강좌별 강의 평가 조회 API

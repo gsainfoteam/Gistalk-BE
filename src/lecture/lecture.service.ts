@@ -43,11 +43,26 @@ export class LectureService {
     }
   }
 
-  //강의 코드로 강의 아이디 조회 API
-  async getLectureId(lecture_code : string)
+  //강의 아이디 조회 API
+  async getLectureId(lecture_code : string, prof_name :string)
   {
-    const found = await this.lectureRepository.findOneBy({lecture_code : await this.toListForm(lecture_code)})
-    if(!found)
+    const found = await this.lectureRepository.find({
+      select : {
+        id : true,
+        lecture_code : true,
+      },
+      relations : {
+        prof : true
+      },
+      where : {
+        lecture_code : await this.toListForm(lecture_code),
+        prof : {
+          prof_name : prof_name
+        }
+      }
+    })
+    
+    if(found.length == 0)
     {
       throw new NotFoundException(`해당되는 강의 코드의 강의가 없습니다. 강의코드 : ${lecture_code}`);
     }
@@ -62,9 +77,6 @@ export class LectureService {
     //Promise<Lecture>
     const { lecture_name, lecture_code, prof_name } =
       createLectureDto;
-
-
-    const lecture_code1 = await this.toListForm(lecture_code)
 
     const found = await this.profRepository.findOneBy({ prof_name: prof_name });
 
