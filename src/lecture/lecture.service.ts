@@ -156,6 +156,7 @@ export class LectureService {
       prof_name : src_prof_name
     }
     const json = JSON.stringify(obj)
+    console.log(json)
     return json
   }
 
