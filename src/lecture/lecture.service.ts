@@ -57,16 +57,17 @@ export class LectureService {
       where : {
         lecture_code : await this.toListForm(lecture_code),
         prof : {
-          prof_name : prof_name
+          prof_name : prof_name,
+          lectures : false
         }
       }
     })
-    
+
     if(found.length == 0)
     {
       throw new NotFoundException(`해당되는 강의 코드의 강의가 없습니다. 강의코드 : ${lecture_code}`);
     }
-    return found
+    return await this.json_filter(found)
   }
 
   //강의 추가 API
@@ -136,6 +137,26 @@ export class LectureService {
     let newResult = result.slice(0, -2);
     newResult += ']';
     return newResult;
+  }
+
+  //강의 아이디 조회 api json 필터링 함수
+  async json_filter(found : any): Promise<any> {
+    const src = JSON.stringify(found)
+    const src1 = src.split(',')
+    const src_id1 = src1[0]
+    const src_id = src_id1.split(':')[1]
+    const src_code1 = src1[1].split(':')
+    const src_code = src_code1[1].toString().split("'")[1]
+    const src_prof_id = src1[2].split(':')[2]
+    const src_prof_name = src1[3].split(':')[1].split('"')[1]
+    const obj = {
+      id : src_id,
+      lecture_code : src_code,
+      prof_id : src_prof_id,
+      prof_name : src_prof_name
+    }
+    const json = JSON.stringify(obj)
+    return json
   }
 
   async remove(id: number): Promise<void> {
