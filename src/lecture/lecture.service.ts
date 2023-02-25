@@ -21,7 +21,7 @@ export class LectureService {
     private profRepository: Repository<Prof>,
   ) {}
 
-  //강좌별 강의 평가 조회 API
+  //강좌별 강의 평가 조회  API
   async getLectureInfo(lecture_id: number): Promise<any> {
     const found = await this.lectureRepository.findOneBy({ id: lecture_id });
 
