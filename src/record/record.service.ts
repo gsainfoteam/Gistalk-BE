@@ -38,8 +38,10 @@ export class RecordService {
       lecture_id,
     } = createrecorddto;
 
+    //강의 검색
     const found = await this.lectureRepository.findOneBy({ id: lecture_id });
 
+    //해당 강의 작성이력 조회
     const found_user = await this.recordRepository.findOne({
       relations: {
         lecture: true,
@@ -51,7 +53,7 @@ export class RecordService {
         },
       },
     }); //임시방편 추후 유저로그인 기능 구현필요
-
+    
     if (found_user) {
       throw new ConflictException(
         `이미 강의 평가를 작성한 유저입니다. 유저명 :  ${user}`,
