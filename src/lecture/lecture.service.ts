@@ -21,7 +21,7 @@ export class LectureService {
     private profRepository: Repository<Prof>,
   ) {}
 
-  //강좌별 강의 평가 조회  API
+  /**강좌별 강의 평가 조회  API*/
   async getLectureInfo(lecture_id: number): Promise<any> {
     const found = await this.lectureRepository.findOneBy({ id: lecture_id });
 
@@ -43,7 +43,7 @@ export class LectureService {
     }
   }
 
-  //강의 아이디 조회 API
+  /**강의 아이디 조회 API*/
   async getLectureId(lecture_code : string, prof_name :string)
   {
     const found = await this.lectureRepository.find({
@@ -70,7 +70,7 @@ export class LectureService {
     return await this.json_filter(found)
   }
 
-  //강의 추가 API
+  /**강의 추가 API*/
   //typerom 문서 일대다 연결하는법  중복오류 교수 테이블 따로 만든 상태에서 강의 테이블 생성 시 교수명을 참조키로 가져와야함
   async createProfLecture(
     createLectureDto: CreateLectureDto,
@@ -125,7 +125,7 @@ export class LectureService {
     }
   }
 
-  // 전공 리스트로 바꿔주는 함수
+  /**전공 리스트로 바꿔주는 함수*/
   async toListForm(data: string): Promise<string> {
     const arr = data.split(' ');
     let i: number;
@@ -139,7 +139,7 @@ export class LectureService {
     return newResult;
   }
 
-  //강의 아이디 조회 api json 필터링 함수
+  /**강의 아이디 조회 api json 필터링 함수*/
   async json_filter(found : any): Promise<any> {
     const src = JSON.stringify(found)
     const src1 = src.split(',')
@@ -160,10 +160,12 @@ export class LectureService {
     return json
   }
 
+  /**강의 id 조회로 삭제 기능 */
   async remove(id: number): Promise<void> {
     await this.lectureRepository.delete(id);
   }
 
+  
   async DeleteLecture(id : number): Promise<void>
   {
     const result = await this.lectureRepository.delete(id);
