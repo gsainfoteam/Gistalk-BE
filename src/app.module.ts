@@ -9,6 +9,7 @@ import { Record } from './record/entity/record.entity';
 import { ScoringModule } from './scoring/scoring.module';
 import { Scoring } from './scoring/entity/scoring.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { UserModule } from './user/user.module';
 import * as Joi from 'joi';
 
 @Module({
@@ -42,6 +43,7 @@ import * as Joi from 'joi';
     ProfModule,
     RecordModule,
     ScoringModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],
