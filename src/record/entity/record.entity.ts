@@ -36,8 +36,11 @@ export class Record {
   @Column()
   oneline: string; //한줄평
 
-  @Column() // 나중에 연결합니다
+  @Column() // uuid양식임
   user_id: string;
+
+  @Column({default : 2})
+  evaluation : number // 추천 1 비추천 0 표시 없음 2
 
   @ManyToOne((Type) => Lecture, (lecture) => lecture.lecture_name, {
     cascade: true,
