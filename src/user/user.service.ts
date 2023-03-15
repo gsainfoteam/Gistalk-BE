@@ -1,11 +1,18 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { InjectRepository } from '@nestjs/typeorm';
 import { NotFoundError } from 'rxjs';
+import { Repository } from 'typeorm';
+import { User } from './entity/user.entity';
 
 @Injectable()
 export class UserService {
-    constructor(private readonly httpService: HttpService) {}
+    constructor(private readonly httpService: HttpService,
+        @InjectRepository(User)
+        private userRepository : Repository<User>
+        ) {
+    }
 
     /**idp로 부터 get 요청을 통해 유저의 로그인 여부를 확인합니다.*/
     async LogIn(jwt_token : string): Promise<any>
@@ -25,8 +32,8 @@ export class UserService {
                     }
                 }
             );
-
-            return ani.data
+            
+            return this.userRepository.manager.save(ani.data.user_uuid)//ani.data
         } catch(err){
             console.log(err)
             throw new NotFoundException('등록되지않은 유저입니다.');
