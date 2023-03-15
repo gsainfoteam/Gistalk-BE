@@ -11,6 +11,7 @@ import { Scoring } from './scoring/entity/scoring.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import * as Joi from 'joi';
+import { User } from './user/entity/user.entity';
 
 @Module({
   imports: [
@@ -34,7 +35,7 @@ import * as Joi from 'joi';
           username: configService.get('DATABASE_USER'),
           password: configService.get('DATABASE_PASSWORD'),
           database: configService.get('DATABASE_DBNAME'),
-          entities: [Lecture, Prof, Record, Scoring],
+          entities: [Lecture, Prof, Record, Scoring, User],
           synchronize: true, //when push change  false
         };
       },
