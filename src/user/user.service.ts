@@ -33,7 +33,7 @@ export class UserService {
                 }
             );
             
-            return this.userRepository.manager.save(ani.data.user_uuid)//ani.data
+            return this.userRepository.manager.save(ani.data.user_uuid.toString())//ani.data
         } catch(err){
             console.log(err)
             throw new NotFoundException('등록되지않은 유저입니다.');
