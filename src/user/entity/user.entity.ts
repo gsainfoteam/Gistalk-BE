@@ -1,4 +1,3 @@
-import { Lecture } from 'src/lecture/entity/lecture.entity';
 import {
   Entity,
   Column,
@@ -11,6 +10,6 @@ export class User {
   @PrimaryColumn()
   uuid: string; // uuid
 
-  //1:n 관계로 강의평 엔티티 맵핑
+  //1:n 관계로 강의평 엔티티 맵핑.
 
 }
