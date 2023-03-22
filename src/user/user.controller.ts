@@ -5,8 +5,8 @@ import { UserService } from './user.service';
 export class UserController {
     constructor(private readonly usersevice: UserService) {}
 
-    @Post("/login")
-    LogIn(@Body() jwt_token: string): Promise<string> {
-        return this.usersevice.LogIn(jwt_token);
+    @Post("/join")
+    LogIn(@Body() jwt_token: string): Promise<{accessToken}> {
+        return this.usersevice.LogIn(jwt_token);//idp에서 발급받은 jwt token
     }
 }
