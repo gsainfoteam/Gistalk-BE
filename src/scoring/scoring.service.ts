@@ -73,6 +73,8 @@ export class ScoringService {
     if (people) {
       this.scoringFuntion('post', lecture, people, main_lecture_id);
     }
+
+    return "success";
   }
 
   async updateScoring(lecture_id: number): Promise<any> {
@@ -91,6 +93,8 @@ export class ScoringService {
       const people = lecture.records.length;
       this.scoringFuntion('patch', lecture, people, lecture_id);
     }
+
+    return "success";
   }
 
   //점수 계산 함수 나중에 따로 레퍼지토리 파서 관리 필요

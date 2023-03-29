@@ -25,7 +25,7 @@ export class RecordService {
   }
 
   //강의 평가 추가 API
-  async createRecord(createrecorddto: CreateRecordDto): Promise<Record> {
+  async createRecord(createrecorddto: CreateRecordDto): Promise<string> {
     const {
       difficulty,
       strength,
@@ -79,7 +79,7 @@ export class RecordService {
         });
 
         await this.recordRepository.manager.save(record);
-        return record;
+        return "success";
       } else {
         throw new NotFoundException(
           `해당되는 id : ${lecture_id} 강의가 없습니다.`,
