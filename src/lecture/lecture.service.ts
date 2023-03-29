@@ -74,7 +74,7 @@ export class LectureService {
   //typerom 문서 일대다 연결하는법  중복오류 교수 테이블 따로 만든 상태에서 강의 테이블 생성 시 교수명을 참조키로 가져와야함
   async createProfLecture(
     createLectureDto: CreateLectureDto,
-  ): Promise<Lecture> {
+  ): Promise<string> {
     //Promise<Lecture>
     const { lecture_name, lecture_code, prof_name } =
       createLectureDto;
@@ -115,7 +115,7 @@ export class LectureService {
         });
 
         await this.lectureRepository.manager.save(lecture);
-        return lecture;
+        return "success";
       }
       else {
         throw new ConflictException(`이미 등록된 강의(${lecture_name})-교수(${prof_name}) 입니다.`);

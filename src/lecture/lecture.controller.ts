@@ -23,7 +23,7 @@ export class LectureController {
 
   //강의추가 API
   @Post('/add')
-  createProfLecture(@Body() lectureData: CreateLectureDto): Promise<Lecture> {
+  createProfLecture(@Body() lectureData: CreateLectureDto): Promise<string> {
     return this.lectureService.createProfLecture(lectureData);
   }
 
