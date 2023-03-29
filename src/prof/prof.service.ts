@@ -65,7 +65,7 @@ export class ProfService {
   }
 
   //교수 추가 API
-  async createProf(createProfDto: CreateProfDto): Promise<Prof> {
+  async createProf(createProfDto: CreateProfDto): Promise<string> {
     const { prof_name } = createProfDto;
     const found = await this.getProfName(prof_name);
 
@@ -74,7 +74,7 @@ export class ProfService {
         prof_name,
       });
       await this.profRepository.save(prof);
-      return prof;
+      return "success";
     } else {
       throw new ConflictException(
         `중복된 교수명입니다. Prof name : ${prof_name}`,

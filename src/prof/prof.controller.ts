@@ -19,7 +19,7 @@ export class ProfController {
   }
 
   @Post('add')
-  createProf(@Body() profData: CreateProfDto): Promise<Prof> {
+  createProf(@Body() profData: CreateProfDto): Promise<string> {
     return this.profService.createProf(profData);
   }
 
