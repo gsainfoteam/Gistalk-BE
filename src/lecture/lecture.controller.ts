@@ -16,7 +16,7 @@ export class LectureController {
   }
 
   //강좌별 강의 평가 조회 API
-  @Get('get:lecture_id')
+  @Get('get/:lecture_id')
   getLectureInfo(@Param('lecture_id') lecture_id: number): Promise<any> {
     return this.lectureService.getLectureInfo(lecture_id);
   }

@@ -13,7 +13,7 @@ export class ProfController {
     return this.profService.getAll();
   }
 
-  @Get('get_:id')
+  @Get('get/:id')
   getProfInfo(@Param('id') id: number): Promise<any> {
     return this.profService.getProfInfo(id);
   }
