@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -23,7 +23,7 @@ export class UserService {
     {
         const token = JSON.stringify(jwt_token).split('"')[3];
         console.log(typeof(token));
-        
+
         try{
             const ani = await this.httpService.axiosRef.get(
                 'https://api.idp.gistory.me/idp/get_user_info',     
