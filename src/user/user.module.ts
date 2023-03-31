@@ -11,7 +11,6 @@ import * as Joi from 'joi';
 
 @Module({
   imports: [
-    ConfigModule,
     PassportModule.register({defaultStrategy: 'jwt'}),
     JwtModule.register({
       secret:'gistalk2023',
@@ -20,7 +19,7 @@ import * as Joi from 'joi';
       }
     })
     ,HttpModule, TypeOrmModule.forFeature([User])],
-  providers: [UserService, ConfigService],
+  providers: [UserService],
   controllers: [UserController]
 })
 export class UserModule {}
