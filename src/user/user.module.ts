@@ -11,13 +11,7 @@ import * as Joi from 'joi';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      validationSchema: Joi.object({
-        CLIENT_ID: Joi.string().required(),
-        CLIENT_SECRET_KEY: Joi.string().required(),
-      }),
-    }),
+    ConfigModule,
     PassportModule.register({defaultStrategy: 'jwt'}),
     JwtModule.register({
       secret:'gistalk2023',
