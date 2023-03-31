@@ -23,7 +23,7 @@ export class UserService {
     {
         const token = JSON.stringify(jwt_token).split('"')[3];
         console.log(typeof(token));
-
+        
         try{
             const ani = await this.httpService.axiosRef.get(
                 'https://api.idp.gistory.me/idp/get_user_info',     
