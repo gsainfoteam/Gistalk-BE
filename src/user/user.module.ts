@@ -6,7 +6,7 @@ import { User } from './entity/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 
 @Module({
@@ -18,15 +18,15 @@ import * as Joi from 'joi';
         CLIENT_SECRET_KEY: Joi.string().required(),
       }),
     }),
-    PassportModule.register({defaultStrategy: 'jwt'})
-    ,JwtModule.register({
+    PassportModule.register({defaultStrategy: 'jwt'}),
+    JwtModule.register({
       secret:'gistalk2023',
       signOptions:{
         expiresIn: '3h',// '10y'
       }
     })
     ,HttpModule, TypeOrmModule.forFeature([User])],
-  providers: [UserService],
+  providers: [UserService, ConfigService],
   controllers: [UserController]
 })
 export class UserModule {}
