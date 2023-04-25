@@ -1,7 +1,9 @@
-import { Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ScoringService } from './scoring.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('scoring')
+@UseGuards(AuthGuard())
 export class ScoringController {
   constructor(private readonly scoringService: ScoringService) {}
 

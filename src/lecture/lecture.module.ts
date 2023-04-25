@@ -5,9 +5,11 @@ import { Record } from 'src/record/entity/record.entity';
 import { Lecture } from './entity/lecture.entity';
 import { LectureController } from './lecture.controller';
 import { LectureService } from './lecture.service';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Lecture, Prof])],
+  imports: [TypeOrmModule.forFeature([Lecture, Prof]),
+  UserModule],
   providers: [LectureService],
   controllers: [LectureController],
 })
