@@ -5,6 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entity/user.entity';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 export class UserService {
@@ -19,10 +20,11 @@ export class UserService {
     /**idp로 부터 get 요청을 통해 유저의 로그인 여부를 확인합니다.
      * 확인되었다면 Gistalk용 jwtToken을 리턴합니다
     */
-    async LogIn(jwt_token : string): Promise<{accessToken}>
+    async LogIn(Loginuserdto : LoginUserDto): Promise<{accessToken}>
     {
-        const token = JSON.stringify(jwt_token).split('"')[3];
-
+        const { jwt_token, role } = Loginuserdto;
+        const obj_token = JSON.parse(`{"jwt_toke":"${jwt_token}"}`) // type err change string to obj
+        const token = JSON.stringify(obj_token).split('"')[3];
         try{
             const ani = await this.httpService.axiosRef.get(
                 'https://api.idp.gistory.me/idp/get_user_info',     
@@ -47,6 +49,8 @@ export class UserService {
             const payload = {user_email_id, user_uuid};
             const accessToken = await this.jwtService.sign(payload);
             
+            
+
             if (found)
             {
                 console.log("이미 등록된 유저")
@@ -59,7 +63,7 @@ export class UserService {
                 .insert()
                 .into(User)
                 .values([
-                    { uuid : user_uuid, email : user_email_id},
+                    { uuid : user_uuid, email : user_email_id, role : role },
                 ])
                 .execute()
                 
