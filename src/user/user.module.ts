@@ -8,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
@@ -15,11 +16,12 @@ import * as Joi from 'joi';
     JwtModule.register({
       secret:'gistalk2023',
       signOptions:{
-        expiresIn: '3h',// '10y'
+        expiresIn: '10y',// 나중에 프엔 개발용 토큰은 '10y'으로 발급합니다
       }
     })
     ,HttpModule, TypeOrmModule.forFeature([User])],
-  providers: [UserService],
-  controllers: [UserController]
+  providers: [UserService, JwtStrategy],
+  controllers: [UserController],
+  exports : [JwtStrategy, PassportModule]
 })
 export class UserModule {}

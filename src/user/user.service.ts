@@ -45,7 +45,7 @@ export class UserService {
                 }
             })
 
-            const payload = {user_email_id};
+            const payload = {user_email_id, user_uuid};
             const accessToken = await this.jwtService.sign(payload);
             
             if (found)
@@ -67,7 +67,7 @@ export class UserService {
             
         } catch(err){
             console.log(err)
-            throw new ConflictException('이미 등록된 유저입니다.')
+            throw new ConflictException('이미 등록된 유저입니다.') // 잘못된 토큰 정보입니다.
         }
 
         
