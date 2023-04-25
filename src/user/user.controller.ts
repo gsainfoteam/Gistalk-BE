@@ -11,9 +11,9 @@ export class UserController {
         return this.usersevice.LogIn(jwt_token);//idp에서 발급받은 jwt token
     }
 
-    @Post("test")
+    @Post("/info")
     @UseGuards(AuthGuard())
     AuthTest(@Req() req){
-        console.log(req.user)
+        return req.user
     }
 }
