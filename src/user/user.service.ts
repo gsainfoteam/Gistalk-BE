@@ -22,7 +22,6 @@ export class UserService {
     async LogIn(jwt_token : string): Promise<{accessToken}>
     {
         const token = JSON.stringify(jwt_token).split('"')[3];
-        console.log(typeof(token));
 
         try{
             const ani = await this.httpService.axiosRef.get(
@@ -36,10 +35,10 @@ export class UserService {
                     }
                 }
             );
-            console.log(ani)
+
             const {user_uuid, user_email_id } = ani.data
             
-            const found = this.userRepository.findOne({
+            const found = await this.userRepository.findOne({
                 where : {
                     email : user_email_id
                 }
@@ -50,9 +49,11 @@ export class UserService {
             
             if (found)
             {
+                console.log("이미 등록된 유저")
                 return {accessToken};
             }
             else{
+                console.log("새로 가입하는 유저")
                 await this.userRepository
                 .createQueryBuilder()
                 .insert()
@@ -67,7 +68,7 @@ export class UserService {
             
         } catch(err){
             console.log(err)
-            throw new ConflictException('이미 등록된 유저입니다.') // 잘못된 토큰 정보입니다.
+            throw new ConflictException('잘못된 토큰 정보입니다.');
         }
 
         
