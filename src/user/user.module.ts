@@ -16,7 +16,7 @@ import { JwtStrategy } from './jwt.strategy';
     JwtModule.register({
       secret:'gistalk2023',
       signOptions:{
-        expiresIn: '10y',// 나중에 프엔 개발용 토큰은 '10y'으로 발급합니다
+        expiresIn: '3h',// 나중에 프엔 개발용 토큰은 '10y'으로 발급합니다
       }
     })
     ,HttpModule, TypeOrmModule.forFeature([User])],
