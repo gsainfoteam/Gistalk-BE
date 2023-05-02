@@ -16,4 +16,5 @@ export class CreateRecordDto {
   readonly user: string; //나중에 제거
 
   readonly lecture_id: number;
+
 }
