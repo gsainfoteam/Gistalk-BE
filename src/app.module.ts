@@ -12,6 +12,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import * as Joi from 'joi';
 import { User } from './user/entity/user.entity';
+import { SemesterModule } from './semester/semester.module';
+import { Semester } from './semester/entity/semester.entity';
 
 @Module({
   imports: [
@@ -37,7 +39,7 @@ import { User } from './user/entity/user.entity';
           username: configService.get('DATABASE_USER'),
           password: configService.get('DATABASE_PASSWORD'),
           database: configService.get('DATABASE_DBNAME'),
-          entities: [Lecture, Prof, Record, Scoring, User],
+          entities: [Lecture, Prof, Record, Scoring, User, Semester],
           synchronize: true, //when push change  false
         };
       },
@@ -47,6 +49,7 @@ import { User } from './user/entity/user.entity';
     RecordModule,
     ScoringModule,
     UserModule,
+    SemesterModule,
   ],
   controllers: [],
   providers: [],

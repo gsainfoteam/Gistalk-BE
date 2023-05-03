@@ -1,4 +1,5 @@
 import { Lecture } from 'src/lecture/entity/lecture.entity';
+import { Semester } from 'src/semester/entity/semester.entity';
 import {
   Entity,
   Column,
@@ -8,6 +9,7 @@ import {
   Unique,
   ManyToMany,
   ManyToOne,
+  JoinTable,
 } from 'typeorm';
 
 @Entity()
@@ -47,4 +49,8 @@ export class Record {
     eager: true,
   })
   lecture: Lecture;
+
+  @ManyToOne((Type) => Semester, { cascade: true })
+  @JoinTable()
+  semesters: Semester;
 }
