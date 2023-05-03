@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { CreateRecordDto } from './dto/create-record.dto';
 import { UpdateRecordDto } from './dto/update-record.dto';
 import { Record } from './entity/record.entity';
+import { Semester } from 'src/semester/entity/semester.entity';
 
 @Injectable()
 export class RecordService {
@@ -17,6 +18,8 @@ export class RecordService {
     private recordRepository: Repository<Record>,
     @InjectRepository(Lecture)
     private lectureRepository: Repository<Lecture>,
+    @InjectRepository(Semester)
+    private semesterRepository: Repository<Semester>
   ) {}
 
   //모든 강의 평가 조회 API
@@ -36,11 +39,13 @@ export class RecordService {
       oneline,
       user,
       lecture_id,
+      semester_id
     } = createrecorddto;
 
     //강의 검색
     const found = await this.lectureRepository.findOneBy({ id: lecture_id });
 
+    const found_semester = await this.semesterRepository.findOneBy({id : semester_id})
     //해당 강의 작성이력 조회
     const found_user = await this.recordRepository.findOne({
       relations: {
@@ -69,6 +74,14 @@ export class RecordService {
         record.satisfy = satisfy;
         record.oneline = oneline;
         record.user_id = user;
+        record.semesters = await this.semesterRepository.findOne({
+          relations: {
+            records: true,
+          },
+          where : {
+            id : semester_id
+          }
+        })
         record.lecture = await this.lectureRepository.findOne({
           relations: {
             records: true,

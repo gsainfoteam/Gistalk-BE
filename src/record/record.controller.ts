@@ -21,7 +21,7 @@ export class RecordController {
     return this.recordservice.createRecord(createrecorddto);
   }
 
-  //강의평가수정
+  //강의평가수정 : 강의평은 삭제가 되지 않는 것을 기본으로 함. 아래 코드는 이전 버전으로 호환되지 않음
   @Patch(':user_id/:lecture_id/modify')
   updateRecord(
     @Param('lecture_id') lecture_id: number,

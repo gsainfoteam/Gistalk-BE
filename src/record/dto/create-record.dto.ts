@@ -17,4 +17,6 @@ export class CreateRecordDto {
 
   readonly lecture_id: number;
 
+  readonly semester_id : number;
+
 }
