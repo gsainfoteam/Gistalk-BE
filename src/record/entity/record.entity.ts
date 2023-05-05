@@ -1,5 +1,6 @@
 import { Lecture } from 'src/lecture/entity/lecture.entity';
 import { Semester } from 'src/semester/entity/semester.entity';
+import { Year } from 'src/year/entity/year.entity';
 import {
   Entity,
   Column,
@@ -53,4 +54,8 @@ export class Record {
   @ManyToOne((Type) => Semester, { cascade: true })
   @JoinTable()
   semesters: Semester;
+
+  @ManyToOne((Type) => Year, { cascade: true })
+  @JoinTable()
+  years: Year;
 }

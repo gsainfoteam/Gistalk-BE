@@ -14,6 +14,8 @@ import * as Joi from 'joi';
 import { User } from './user/entity/user.entity';
 import { SemesterModule } from './semester/semester.module';
 import { Semester } from './semester/entity/semester.entity';
+import { YearModule } from './year/year.module';
+import { Year } from './year/entity/year.entity';
 
 @Module({
   imports: [
@@ -39,7 +41,7 @@ import { Semester } from './semester/entity/semester.entity';
           username: configService.get('DATABASE_USER'),
           password: configService.get('DATABASE_PASSWORD'),
           database: configService.get('DATABASE_DBNAME'),
-          entities: [Lecture, Prof, Record, Scoring, User, Semester],
+          entities: [Lecture, Prof, Record, Scoring, User, Semester, Year],
           synchronize: true, //when push change  false
         };
       },
@@ -50,6 +52,7 @@ import { Semester } from './semester/entity/semester.entity';
     ScoringModule,
     UserModule,
     SemesterModule,
+    YearModule,
   ],
   controllers: [],
   providers: [],

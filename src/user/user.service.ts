@@ -33,7 +33,6 @@ export class UserService {
                         jwt_token : token,
                         client_id : this.configService.get('CLIENT_ID'),
                         client_secret_key : this.configService.get('CLIENT_SECRET_KEY')
-                        
                     }
                 }
             );
