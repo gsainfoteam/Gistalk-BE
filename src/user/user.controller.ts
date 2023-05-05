@@ -8,13 +8,15 @@ export class UserController {
     constructor(private readonly usersevice: UserService) {}
 
     @Post("/join")
-    LogIn(@Body() Loginuserdto : LoginUserDto): Promise<{accessToken}> {
-        return this.usersevice.LogIn(Loginuserdto);//idp에서 발급받은 jwt token
+    LogIn(@Body() loginuserDto : LoginUserDto): Promise<{accessToken}> {
+        return this.usersevice.LogIn(loginuserDto);//idp에서 발급받은 jwt token
     }
 
     @Post("/info")
     @UseGuards(AuthGuard())
-    AuthTest(@Req() req){
+    UserIonfo(@Req() req){
         return req.user
     }
+
+
 }

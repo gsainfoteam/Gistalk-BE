@@ -11,6 +11,7 @@ import { UpdateRecordDto } from './dto/update-record.dto';
 import { Record } from './entity/record.entity';
 import { Semester } from 'src/semester/entity/semester.entity';
 import { Year } from 'src/year/entity/year.entity';
+import { User } from 'src/user/entity/user.entity';
 
 @Injectable()
 export class RecordService {
@@ -23,6 +24,8 @@ export class RecordService {
     private semesterRepository: Repository<Semester>,
     @InjectRepository(Year)
     private yearRepository: Repository<Year>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {}
 
   //모든 강의 평가 조회 API
@@ -31,7 +34,7 @@ export class RecordService {
   }
 
   //강의 평가 추가 API
-  async createRecord(createrecorddto: CreateRecordDto): Promise<string> {
+  async createRecord(createrecorddto: CreateRecordDto, id : number): Promise<string> {
     const {
       difficulty,
       strength,
@@ -40,34 +43,36 @@ export class RecordService {
       lots,
       satisfy,
       oneline,
-      user,
       lecture_id,
       semester_id,
       year
     } = createrecorddto;
 
+    const user_id = id;
     //강의 검색
     const found = await this.lectureRepository.findOneBy({ id: lecture_id });
 
-    const found_semester = await this.semesterRepository.findOneBy({id : semester_id})
     //해당 강의 작성이력 조회
     const found_user = await this.recordRepository.findOne({
       relations: {
         lecture: true,
+        user : true
       },
       where: {
-        user_id: user,
+        user : {
+          id : user_id
+        },
         lecture: {
           id: lecture_id,
         },
       },
-    }); //임시방편 추후 유저로그인 기능 구현필요
+    });
     
     if (found_user) {
       throw new ConflictException(
-        `이미 강의 평가를 작성한 유저입니다. 유저명 :  ${user}`,
+        `이미 강의를 평가`
       );
-    } else {
+    } else { // conditon 이전에 (lecture id , uuid)의 꼴이 같지 않는 경우를 세야함. 
       if (found) {
         const record = new Record();
         record.difficulty = difficulty;
@@ -77,7 +82,14 @@ export class RecordService {
         record.lots = lots;
         record.satisfy = satisfy;
         record.oneline = oneline;
-        record.user_id = user;
+        record.user = await this.userRepository.findOne({
+          relations : {
+            records : true,
+          },
+          where : {
+            id : user_id
+          }
+        })
         record.years = await this.yearRepository.findOne({
           relations : {
             records : true,
@@ -127,7 +139,7 @@ export class RecordService {
         lecture: true,
       },
       where: {
-        user_id: user_id,
+
         lecture: {
           id: lecture_id,
         },

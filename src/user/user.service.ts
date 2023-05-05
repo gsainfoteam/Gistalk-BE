@@ -22,34 +22,47 @@ export class UserService {
     */
     async LogIn(Loginuserdto : LoginUserDto): Promise<{accessToken}>
     {
-        const { jwt_token, role } = Loginuserdto;
-        const obj_token = JSON.parse(`{"jwt_toke":"${jwt_token}"}`) // type err change string to obj
-        const token = JSON.stringify(obj_token).split('"')[3];
+        let { jwt_token, role, email, uuid } = Loginuserdto;
+        let user_email_id
+        let user_uuid
+        let accessToken
         try{
-            const ani = await this.httpService.axiosRef.get(
-                'https://api.idp.gistory.me/idp/get_user_info',     
-                {
-                    params : {
-                        jwt_token : token,
-                        client_id : this.configService.get('CLIENT_ID'),
-                        client_secret_key : this.configService.get('CLIENT_SECRET_KEY')
+            if(role == 'admin' && email && uuid)
+            {   
+                user_email_id = email;
+                user_uuid = uuid;
+                const payload = {user_email_id, user_uuid};
+                accessToken = await this.jwtService.sign(payload);
+            }
+            else if( jwt_token && !role && !email && !uuid ){
+                const obj_token = JSON.parse(`{"jwt_toke":"${jwt_token}"}`) // type err change string to obj
+                const token = JSON.stringify(obj_token).split('"')[3];
+                const ani = await this.httpService.axiosRef.get(
+                    'https://api.idp.gistory.me/idp/get_user_info',     
+                    {
+                        params : {
+                            jwt_token : token,
+                            client_id : this.configService.get('CLIENT_ID'),
+                            client_secret_key : this.configService.get('CLIENT_SECRET_KEY')
+                        }
                     }
-                }
-            );
+                );
+                user_email_id = ani.data.email;
+                user_uuid = ani.data.uuid;
 
-            const {user_uuid, user_email_id } = ani.data
-            
+                const payload = {user_email_id, user_uuid};
+                accessToken = await this.jwtService.sign(payload);
+            }
             const found = await this.userRepository.findOne({
                 where : {
                     email : user_email_id
                 }
             })
 
-            const payload = {user_email_id, user_uuid};
-            const accessToken = await this.jwtService.sign(payload);
-            
-            
-
+            if(!accessToken)
+            {
+                throw new NotFoundException('잘못된 정보입니다. - ')
+            }
             if (found)
             {
                 console.log("이미 등록된 유저")
@@ -71,11 +84,10 @@ export class UserService {
             
         } catch(err){
             console.log(err)
-            throw new ConflictException('잘못된 토큰 정보입니다.');
+            throw new ConflictException('잘못된 정보입니다.');
         }
 
         
     }  
-
 }
 
