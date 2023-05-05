@@ -13,8 +13,6 @@ export class CreateRecordDto {
   //review
   readonly oneline: string;
 
-  readonly user: string; //나중에 제거
-
   readonly lecture_id: number;
 
   readonly semester_id : number;

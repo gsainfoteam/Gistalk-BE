@@ -1,5 +1,6 @@
 import { Lecture } from 'src/lecture/entity/lecture.entity';
 import { Semester } from 'src/semester/entity/semester.entity';
+import { User } from 'src/user/entity/user.entity';
 import { Year } from 'src/year/entity/year.entity';
 import {
   Entity,
@@ -39,9 +40,6 @@ export class Record {
   @Column()
   oneline: string; //한줄평
 
-  @Column() // uuid양식임
-  user_id: string;
-
   @Column({default : 2})
   evaluation : number // 추천 1 비추천 0 표시 없음 2
 
@@ -58,4 +56,8 @@ export class Record {
   @ManyToOne((Type) => Year, { cascade: true })
   @JoinTable()
   years: Year;
+
+  @ManyToOne((Type) => User, { cascade: true })
+  @JoinTable()
+  user: User;
 }
