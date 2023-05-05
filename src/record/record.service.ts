@@ -10,6 +10,7 @@ import { CreateRecordDto } from './dto/create-record.dto';
 import { UpdateRecordDto } from './dto/update-record.dto';
 import { Record } from './entity/record.entity';
 import { Semester } from 'src/semester/entity/semester.entity';
+import { Year } from 'src/year/entity/year.entity';
 
 @Injectable()
 export class RecordService {
@@ -19,7 +20,9 @@ export class RecordService {
     @InjectRepository(Lecture)
     private lectureRepository: Repository<Lecture>,
     @InjectRepository(Semester)
-    private semesterRepository: Repository<Semester>
+    private semesterRepository: Repository<Semester>,
+    @InjectRepository(Year)
+    private yearRepository: Repository<Year>,
   ) {}
 
   //모든 강의 평가 조회 API
@@ -39,7 +42,8 @@ export class RecordService {
       oneline,
       user,
       lecture_id,
-      semester_id
+      semester_id,
+      year
     } = createrecorddto;
 
     //강의 검색
@@ -74,6 +78,14 @@ export class RecordService {
         record.satisfy = satisfy;
         record.oneline = oneline;
         record.user_id = user;
+        record.years = await this.yearRepository.findOne({
+          relations : {
+            records : true,
+          },
+          where : {
+            year : year
+          }
+        })
         record.semesters = await this.semesterRepository.findOne({
           relations: {
             records: true,

@@ -6,9 +6,10 @@ import { RecordController } from './record.controller';
 import { RecordService } from './record.service';
 import { UserModule } from 'src/user/user.module';
 import { Semester } from 'src/semester/entity/semester.entity';
+import { Year } from 'src/year/entity/year.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Record, Lecture, Semester]),
+  imports: [TypeOrmModule.forFeature([Record, Lecture, Semester, Record, Year]),
   UserModule],
   providers: [RecordService],
   controllers: [RecordController],
