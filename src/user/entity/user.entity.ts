@@ -1,4 +1,5 @@
 import { Record } from 'src/record/entity/record.entity';
+import { UserAuth } from 'src/user_auth/entity/user-auth.entity';
 import {
   Entity,
   Column,
@@ -22,10 +23,10 @@ export class User {
   @Column()
   email : string;
 
-  @Column({default : "user"})
-  role : string;
-
   @OneToMany((Type) => Record, (record) => record.user)
   records: Record[];
+
+  @OneToMany(type => UserAuth, userAuth => userAuth.user, {eager: true})
+  authorities?: any[];
 
 }
