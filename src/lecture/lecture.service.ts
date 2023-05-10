@@ -34,21 +34,22 @@ export class LectureService {
         relations: {
           records: {
             years : true,
-            semesters : true
+            semesters : true,
+            user : true
           },
         },
         where: {
           id: lecture_id,
         },
       });
-      console.log(lecture)
-      const filter = lecture.records;
+
       const obj_list = [];
+      const filter = lecture.records;
       for(var i = 0; i < filter.length; i++)
       {
         const parse : any = filter[i]
         const obj = {
-          id : parse.id,
+          record_id : parse.id,
           difficulty : parse.difficulty,
           strength : parse.strength,
           helpful : parse.helpful,
@@ -58,12 +59,12 @@ export class LectureService {
           review : parse.review,
           evaluation : parse.evaluation,
           semester : parse.semesters.id,
-          year : parse.years.year
+          year : parse.years.year,
+          writer_id : parse.user.id
         };
         obj_list.push(obj);
       }
-      
-      console.log(obj_list)
+
       return obj_list;
     }
   }
