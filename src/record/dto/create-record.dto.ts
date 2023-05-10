@@ -11,7 +11,7 @@ export class CreateRecordDto {
 
   readonly satisfy: number;
   //review
-  readonly oneline: string;
+  readonly review: string;
 
   readonly lecture_id: number;
 

@@ -73,6 +73,8 @@ export class ScoringService {
     if (people) {
       this.scoringFuntion('post', lecture, people, main_lecture_id);
     }
+
+    return "success"
   }
 
   async updateScoring(lecture_id: number): Promise<any> {

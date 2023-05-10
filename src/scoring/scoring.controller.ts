@@ -7,7 +7,7 @@ import { AuthGuard } from '@nestjs/passport';
 export class ScoringController {
   constructor(private readonly scoringService: ScoringService) {}
 
-  //강평 점수 계산
+  //강평 점수 최초 1회 계산
   @Post('get/:lecture_id')
   scoring(@Param('lecture_id') lecture_id: number): Promise<any> {
     return this.scoringService.scoring(lecture_id);

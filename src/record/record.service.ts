@@ -42,7 +42,7 @@ export class RecordService {
       interest,
       lots,
       satisfy,
-      oneline,
+      review,
       lecture_id,
       semester_id,
       year
@@ -81,7 +81,7 @@ export class RecordService {
         record.interest = interest;
         record.lots = lots;
         record.satisfy = satisfy;
-        record.oneline = oneline;
+        record.review = review;
         record.user = await this.userRepository.findOne({
           relations : {
             records : true,
@@ -152,7 +152,7 @@ export class RecordService {
     record.interest = interest;
     record.lots = lots;
     record.satisfy = satisfy;
-    record.oneline = oneline;
+    record.review = oneline;
     await this.recordRepository.save(record);
     return "success";
   }
