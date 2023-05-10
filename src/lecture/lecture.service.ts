@@ -41,23 +41,30 @@ export class LectureService {
           id: lecture_id,
         },
       });
-
+      console.log(lecture)
       const filter = lecture.records;
-      const parse : any = filter[0]
-      const obj = {
-        id : parse.id,
-        difficulty : parse.difficulty,
-        strength : parse.strength,
-        helpful : parse.helpful,
-        interest : parse.interest,
-        lots : parse.lots,
-        satisfy : parse.satisfy,
-        review : parse.review,
-        evaluation : parse.evaluation,
-        semester : parse.semesters.id,
-        year : parse.years.year
-      };
-      return obj;
+      const obj_list = [];
+      for(var i = 0; i < filter.length; i++)
+      {
+        const parse : any = filter[i]
+        const obj = {
+          id : parse.id,
+          difficulty : parse.difficulty,
+          strength : parse.strength,
+          helpful : parse.helpful,
+          interest : parse.interest,
+          lots : parse.lots,
+          satisfy : parse.satisfy,
+          review : parse.review,
+          evaluation : parse.evaluation,
+          semester : parse.semesters.id,
+          year : parse.years.year
+        };
+        obj_list.push(obj);
+      }
+      
+      console.log(obj_list)
+      return obj_list;
     }
   }
 
