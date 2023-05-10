@@ -38,7 +38,7 @@ export class Record {
   satisfy: number; //만족도
   //리뷰
   @Column()
-  oneline: string; //한줄평
+  review: string;
 
   @Column({default : 2})
   evaluation : number // 추천 1 비추천 0 표시 없음 2

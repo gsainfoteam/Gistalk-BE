@@ -32,14 +32,32 @@ export class LectureService {
     } else {
       const lecture = await this.lectureRepository.findOne({
         relations: {
-          records: true,
+          records: {
+            years : true,
+            semesters : true
+          },
         },
         where: {
           id: lecture_id,
         },
       });
 
-      return lecture;
+      const filter = lecture.records;
+      const parse : any = filter[0]
+      const obj = {
+        id : parse.id,
+        difficulty : parse.difficulty,
+        strength : parse.strength,
+        helpful : parse.helpful,
+        interest : parse.interest,
+        lots : parse.lots,
+        satisfy : parse.satisfy,
+        review : parse.review,
+        evaluation : parse.evaluation,
+        semester : parse.semesters.id,
+        year : parse.years.year
+      };
+      return obj;
     }
   }
 
