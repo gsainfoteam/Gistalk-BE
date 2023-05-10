@@ -6,6 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entity/user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
+import { PaylaodDto } from './dto/payload.dto';
+import { AuthParse } from 'src/utils/utils';
 
 @Injectable()
 export class UserService {
@@ -22,23 +24,16 @@ export class UserService {
     */
     async LogIn(Loginuserdto : LoginUserDto): Promise<{accessToken}>
     {
-        let { jwt_token, role, email, uuid } = Loginuserdto;
-        let user_email_id
-        let user_uuid
-        let accessToken
+        let { jwt_token, email, uuid } = Loginuserdto;
+        let email_user
+        let uuid_user
         try{
-            if(role == 'admin' && email && uuid)
-            {   
-                user_email_id = email;
-                user_uuid = uuid;
-                const payload = {user_email_id, user_uuid};
-                accessToken = await this.jwtService.sign(payload);
-            }
-            else if( jwt_token && !role && !email && !uuid ){
+            if( jwt_token && !email && !uuid ){
+                console.log('token in')
                 const obj_token = JSON.parse(`{"jwt_toke":"${jwt_token}"}`) // type err change string to obj
                 const token = JSON.stringify(obj_token).split('"')[3];
                 const ani = await this.httpService.axiosRef.get(
-                    'https://api.idp.gistory.me/idp/get_user_info',     
+                    this.configService.get('IDP_URL'),     
                     {
                         params : {
                             jwt_token : token,
@@ -47,47 +42,67 @@ export class UserService {
                         }
                     }
                 );
-                user_email_id = ani.data.email;
-                user_uuid = ani.data.uuid;
-
-                const payload = {user_email_id, user_uuid};
-                accessToken = await this.jwtService.sign(payload);
+                email_user = ani.data.user_email_id;
+                uuid_user = ani.data.user_uuid;
             }
-            const found = await this.userRepository.findOne({
+            else if ( email && uuid && !jwt_token ){ // 개발용. 따로 복잡한 비밀번호 할당하면 쓸 순 있겠지만 어디까지나 user_role부여서 토큰으로 로그인해야함.
+                console.log('local in')
+                email_user = email
+                uuid_user = uuid
+            }
+            else {
+                throw new NotFoundException("잘못된 입력");
+            }
+
+            
+            const user_found = await this.userRepository.find({
                 where : {
-                    email : user_email_id
+                    uuid : uuid_user,
+                    email : email_user
                 }
             })
 
-            if(!accessToken)
+            if(!email_user || !uuid_user)
             {
-                throw new NotFoundException('잘못된 정보입니다. - ')
+                throw new NotFoundException
             }
-            if (found)
+            
+            if(user_found.length > 0)
             {
-                console.log("이미 등록된 유저")
+                console.log("Welcome again!")
+                const payload : PaylaodDto = {
+                    id : user_found[0].id,
+                    uuid: uuid_user,
+                    email : email_user,
+                    authorities : AuthParse(user_found)
+                };
+                const accessToken = await this.jwtService.sign(payload)
                 return {accessToken};
             }
             else{
-                console.log("새로 가입하는 유저")
+                console.log("Welcome!")
                 await this.userRepository
                 .createQueryBuilder()
                 .insert()
                 .into(User)
                 .values([
-                    { uuid : user_uuid, email : user_email_id, role : role },
+                    { uuid : uuid_user, email : email_user },
                 ])
                 .execute()
-                
+                let payload1 = {
+                    uuid: uuid_user,
+                    email : email_user,
+                };
+
+                const accessToken = await this.jwtService.sign(payload1)
                 return {accessToken}; // gistalk을 위한 토큰
             }
-            
         } catch(err){
             console.log(err)
             throw new ConflictException('잘못된 정보입니다.');
         }
 
         
-    }  
+    }
 }
 
