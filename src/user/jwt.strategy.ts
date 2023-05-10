@@ -6,21 +6,24 @@ import { User } from "./entity/user.entity";
 import { Repository } from "typeorm";
 import { PaylaodDto } from "./dto/payload.dto";
 import { AuthParse } from "src/utils/utils";
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 
 export class JwtStrategy extends PassportStrategy(Strategy){
 
     constructor(
+        private readonly configService : ConfigService,
         @InjectRepository(User)
-        private userRepository : Repository<User>,
+        private userRepository : Repository<User>
+        
     ){
         super({
-            secretOrKey: 'gistalk2023',
-            jwtFromRequest : ExtractJwt.fromAuthHeaderAsBearerToken()
+            jwtFromRequest : ExtractJwt.fromAuthHeaderAsBearerToken(),
+            secretOrKey: configService.get('JWT')
+            
         });
     }
-
 
     async validate(payload : PaylaodDto){
         const user = await this.userRepository.find({
