@@ -18,6 +18,8 @@ import { YearModule } from './year/year.module';
 import { Year } from './year/entity/year.entity';
 import { UserAuthModule } from './user_auth/user_auth.module';
 import { UserAuth } from './user_auth/entity/user-auth.entity';
+import { AssignmentModule } from './assignment/assignment.module';
+import {Assignment} from "./assignment/entity/assignment.entity";
 
 @Module({
   imports: [
@@ -43,7 +45,7 @@ import { UserAuth } from './user_auth/entity/user-auth.entity';
           username: configService.get('DATABASE_USER'),
           password: configService.get('DATABASE_PASSWORD'),
           database: configService.get('DATABASE_DBNAME'),
-          entities: [Lecture, Prof, Record, Scoring, User, Semester, Year, UserAuth],
+          entities: [Lecture, Prof, Record, Scoring, User, Semester, Year, UserAuth, Assignment],
           synchronize: true, //when push change  false
         };
       },
@@ -56,6 +58,7 @@ import { UserAuth } from './user_auth/entity/user-auth.entity';
     SemesterModule,
     YearModule,
     UserAuthModule,
+    AssignmentModule,
   ],
   controllers: [],
   providers: [],
