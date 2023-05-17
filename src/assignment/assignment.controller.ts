@@ -8,8 +8,8 @@ export class AssignmentController {
 
     constructor(private readonly assignmentService: AssignmentService) {}
 
-    @Post('/add')
-    createLectureAssignment(@Body() assignmentData: CreateassignmentDto): Promise<string> {
-        return this.assignmentService.createProfLecture(lectureData);
-    }
+    // @Post('/add')
+    // createLectureAssignment(@Body() assignmentData: CreateassignmentDto): Promise<string> {
+    //     return this.assignmentService.createProfLecture(lectureData);
+    // }
 }
