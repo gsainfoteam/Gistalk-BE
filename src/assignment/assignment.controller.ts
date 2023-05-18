@@ -11,8 +11,8 @@ export class AssignmentController {
     constructor(private readonly assignmentService: AssignmentService) {}
 
     //과제 평가
-    @Post('add/:record_id')
-    createLectureAssignment(@Body() createLectureAssignment: CreateAssignmentDto): Promise<string> {
-        return this.assignmentService.createLectureAssignment(createLectureAssignment);
+    //@Post('add/:record_id')
+   // createLectureAssignment(@Body() createLectureAssignment: CreateAssignmentDto): Promise<string> {
+        //return this.assignmentService.createLectureAssignment(createLectureAssignment);
     }
-}
+//}
