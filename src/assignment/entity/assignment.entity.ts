@@ -1,4 +1,3 @@
-import { Lecture } from 'src/lecture/entity/lecture.entity';
 import {
     Entity,
     Column,
@@ -23,11 +22,9 @@ export class Assignment {
     project: boolean;
 
     @Column()
-    others: boolean;
+    other: boolean;
 
-
-
-    @OneToOne(() => Record, (record ) => record.assignment)
+    @OneToOne(() => Record, (record) => record.assignment)
     @JoinColumn()
     record : Record;
 }
