@@ -1,0 +1,8 @@
+DATABASE_HOST="localhost"
+DATABASE_USER="abcd"
+DATABASE_PASSWORD="qaws"
+DATABASE_DBNAME="gistalk"
+CLIENT_ID="gistalk2023"
+CLIENT_SECRET_KEY="HDRbyP277JND7YbZCKINM92M3vi7BALx"
+IDP_URL="api.idp.gistory.me/idp/login?client_id=gistalk2023&redirect_uri=redirect_url"
+JWT="gistalk"
