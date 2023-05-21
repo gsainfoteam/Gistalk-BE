@@ -13,8 +13,6 @@ import {
   ManyToOne,
   JoinTable, OneToOne,
 } from 'typeorm';
-import {Scoring} from "../../scoring/entity/scoring.entity";
-import {Assignment} from "../../assignment/entity/assignment.entity";
 
 @Entity()
 export class Record {
@@ -62,7 +60,4 @@ export class Record {
   @ManyToOne((Type) => User, { cascade: true })
   @JoinTable()
   user: User;
-
-  @OneToOne(() => Assignment, (assignment) => assignment.record)
-  assignment : Assignment;
 }
