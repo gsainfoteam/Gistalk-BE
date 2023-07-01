@@ -74,7 +74,7 @@ export class ProfService {
         prof_name,
       });
       await this.profRepository.save(prof);
-      return "success";
+      return 'success';
     } else {
       throw new ConflictException(
         `중복된 교수명입니다. Prof name : ${prof_name}`,
@@ -82,8 +82,7 @@ export class ProfService {
     }
   }
 
-  async DeleteProf(id : number): Promise<void>
-  {
+  async DeleteProf(id: number): Promise<void> {
     const result = await this.profRepository.delete(id);
   }
 }
