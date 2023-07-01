@@ -8,8 +8,7 @@ import { ProfService } from './prof.service';
 import { UserModule } from 'src/user/user.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Prof, Scoring]),
-  UserModule],
+  imports: [TypeOrmModule.forFeature([Prof, Scoring]), UserModule],
   providers: [ProfService],
   controllers: [ProfController],
 })
