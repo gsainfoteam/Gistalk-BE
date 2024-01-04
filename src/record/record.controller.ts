@@ -26,12 +26,8 @@ export class RecordController {
 
   //강의평가 추가
   @Post('add')
-  @UseGuards(AuthGuard())
-  createRecord(
-    @Req() req,
-    @Body() createrecorddto: CreateRecordDto,
-  ): Promise<any> {
-    return this.recordservice.createRecord(createrecorddto, req.user.id);
+  createRecord(@Body() createrecorddto: CreateRecordDto): Promise<any> {
+    return this.recordservice.createRecord(createrecorddto);
   }
 
   //강의평가수정 : 강의평은 삭제가 되지 않는 것을 기본으로 함. 아래 코드는 이전 버전으로 호환되지 않음
