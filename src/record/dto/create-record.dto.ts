@@ -10,13 +10,14 @@ export class CreateRecordDto {
   readonly lots: number;
 
   readonly satisfy: number;
-  //review
+
   readonly review: string;
 
   readonly lecture_id: number;
 
-  readonly semester_id : number;
+  readonly semester_id: number;
 
   readonly year: string;
 
+  readonly user_id: number;
 }

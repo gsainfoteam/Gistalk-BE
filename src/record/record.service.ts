@@ -34,7 +34,7 @@ export class RecordService {
   }
 
   //강의 평가 추가 API
-  async createRecord(createrecorddto: CreateRecordDto, id : number): Promise<string> {
+  async createRecord(createrecorddto: CreateRecordDto): Promise<string> {
     const {
       difficulty,
       strength,
@@ -45,34 +45,32 @@ export class RecordService {
       review,
       lecture_id,
       semester_id,
-      year
+      year,
+      user_id,
     } = createrecorddto;
-
-    const user_id = id;
     //강의 검색
     const found = await this.lectureRepository.findOneBy({ id: lecture_id });
 
-    //해당 강의 작성이력 조회
+    //해당 강의 작성이력 조회 +) 각년도 학기별로 1번씩 제한 기능 추가필요
     const found_user = await this.recordRepository.findOne({
       relations: {
         lecture: true,
-        user : true
+        user: true,
       },
       where: {
-        user : {
-          id : user_id
+        user: {
+          id: user_id,
         },
         lecture: {
           id: lecture_id,
         },
       },
     });
-    
+
     if (found_user) {
-      throw new ConflictException(
-        `이미 강의를 평가`
-      );
-    } else { // conditon 이전에 (lecture id , uuid)의 꼴이 같지 않는 경우를 세야함. 
+      throw new ConflictException(`이미 강의를 평가`);
+    } else {
+      // conditon 이전에 (lecture id , uuid)의 꼴이 같지 않는 경우를 세야함.
       if (found) {
         const record = new Record();
         record.difficulty = difficulty;
@@ -83,29 +81,29 @@ export class RecordService {
         record.satisfy = satisfy;
         record.review = review;
         record.user = await this.userRepository.findOne({
-          relations : {
-            records : true,
+          relations: {
+            records: true,
           },
-          where : {
-            id : user_id
-          }
-        })
+          where: {
+            id: user_id,
+          },
+        });
         record.years = await this.yearRepository.findOne({
-          relations : {
-            records : true,
+          relations: {
+            records: true,
           },
-          where : {
-            year : year
-          }
-        })
+          where: {
+            year: year,
+          },
+        });
         record.semesters = await this.semesterRepository.findOne({
           relations: {
             records: true,
           },
-          where : {
-            id : semester_id
-          }
-        })
+          where: {
+            id: semester_id,
+          },
+        });
         record.lecture = await this.lectureRepository.findOne({
           relations: {
             records: true,
@@ -116,7 +114,7 @@ export class RecordService {
         });
 
         await this.recordRepository.manager.save(record);
-        return "success";
+        return 'success';
       } else {
         throw new NotFoundException(
           `해당되는 id : ${lecture_id} 강의가 없습니다.`,
@@ -139,7 +137,6 @@ export class RecordService {
         lecture: true,
       },
       where: {
-
         lecture: {
           id: lecture_id,
         },
@@ -154,6 +151,6 @@ export class RecordService {
     record.satisfy = satisfy;
     record.review = oneline;
     await this.recordRepository.save(record);
-    return "success";
+    return 'success';
   }
 }
