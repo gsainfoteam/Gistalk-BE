@@ -1,19 +1,30 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { CreateLectureDto } from './dto/create-lecture.dto';
 import { Lecture } from './entity/lecture.entity';
 import { LectureService } from './lecture.service';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('lectures')
-@UseGuards(AuthGuard())
+//@UseGuards(AuthGuard())
 export class LectureController {
   constructor(private readonly lectureService: LectureService) {}
 
   //강의 코드, 교수명으로 강의 아이디 조회 API
   @Get('getting')
   getLectureId(
-    @Query('lecture_code') lecture_code : string,
-    @Query('prof_name') prof_name : string): Promise<any> {
+    @Query('lecture_code') lecture_code: string,
+    @Query('prof_name') prof_name: string,
+  ): Promise<any> {
     return this.lectureService.getLectureId(lecture_code, prof_name);
   }
 
@@ -30,9 +41,8 @@ export class LectureController {
   }
 
   //강의 삭제 API
-  @Delete("delete:id")
-  DeleteLecture(@Param('id') id : number): Promise<any>
-  {
+  @Delete('delete:id')
+  DeleteLecture(@Param('id') id: number): Promise<any> {
     return this.lectureService.DeleteLecture(id);
   }
 }

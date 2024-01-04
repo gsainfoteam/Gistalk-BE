@@ -3,7 +3,7 @@ import { ScoringService } from './scoring.service';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('scoring')
-@UseGuards(AuthGuard())
+//@UseGuards(AuthGuard())
 export class ScoringController {
   constructor(private readonly scoringService: ScoringService) {}
 

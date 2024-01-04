@@ -1,11 +1,20 @@
-import { Body, Controller, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { CreateRecordDto } from './dto/create-record.dto';
 import { UpdateRecordDto } from './dto/update-record.dto';
 import { RecordService } from './record.service';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('records')
-@UseGuards(AuthGuard())
+//@UseGuards(AuthGuard())
 export class RecordController {
   constructor(private readonly recordservice: RecordService) {}
 
@@ -18,7 +27,10 @@ export class RecordController {
   //강의평가 추가
   @Post('add')
   @UseGuards(AuthGuard())
-  createRecord(@Req() req, @Body() createrecorddto: CreateRecordDto): Promise<any> {
+  createRecord(
+    @Req() req,
+    @Body() createrecorddto: CreateRecordDto,
+  ): Promise<any> {
     return this.recordservice.createRecord(createrecorddto, req.user.id);
   }
 
@@ -31,5 +43,4 @@ export class RecordController {
   ): Promise<any> {
     return this.recordservice.updateRecord(lecture_id, user_id, modify);
   }
-
 }
