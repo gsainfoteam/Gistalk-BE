@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Lecture } from 'src/lecture/entity/lecture.entity';
 import { Repository } from 'typeorm';
 import { Scoring } from './entity/scoring.entity';
-import { scoringrepo } from './repository/scoring.repository';
 
 @Injectable()
 export class ScoringService {
@@ -74,7 +73,7 @@ export class ScoringService {
       this.scoringFuntion('post', lecture, people, main_lecture_id);
     }
 
-    return "success"
+    return 'success';
   }
 
   async updateScoring(lecture_id: number): Promise<any> {
@@ -133,8 +132,8 @@ export class ScoringService {
     lots_sum = lots_sum / i;
     sati_sum = sati_sum / i;
 
-    total_score =
-      (diff_sum + stren_sum + help_sum + inter_sum + lots_sum + sati_sum) / 6;
+    // total_score =
+    //   (diff_sum + stren_sum + help_sum + inter_sum + lots_sum + sati_sum) / 6;
     const found = await this.lectureRepository.findOne({
       select: {
         id: true,
@@ -158,7 +157,7 @@ export class ScoringService {
       scoring.lots_aver = lots_sum;
       scoring.sati_aver = sati_sum;
       scoring.people = people;
-      scoring.total_score = total_score.toPrecision(2);
+      // scoring.total_score = total_score.toPrecision(2);
       scoring.lecture = await this.lectureRepository.findOne({
         relations: {
           records: true,
@@ -186,7 +185,7 @@ export class ScoringService {
       scoring.lots_aver = lots_sum;
       scoring.sati_aver = sati_sum;
       scoring.people = people;
-      scoring.total_score = total_score.toPrecision(2);
+      // scoring.total_score = total_score.toPrecision(2);
       await this.scoringRepository.save(scoring);
       return scoring;
     }

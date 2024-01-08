@@ -45,8 +45,8 @@ export class scoringrepo {
     lots_sum = lots_sum / i;
     sati_sum = sati_sum / i;
 
-    total_score =
-      (diff_sum + stren_sum + help_sum + inter_sum + lots_sum + sati_sum) / 6;
+    // total_score =
+    //   (diff_sum + stren_sum + help_sum + inter_sum + lots_sum + sati_sum) / 6;
     const found = await this.lectureRepository.findOne({
       select: {
         id: true,
@@ -70,7 +70,7 @@ export class scoringrepo {
     scoring.lots_aver = lots_sum;
     scoring.sati_aver = sati_sum;
     scoring.people = people;
-    scoring.total_score = total_score.toPrecision(2);
+    // scoring.total_score = total_score.toPrecision(2);
     scoring.lecture = await this.lectureRepository.findOne({
       relations: {
         records: true,
