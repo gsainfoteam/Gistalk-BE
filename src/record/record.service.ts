@@ -51,11 +51,13 @@ export class RecordService {
     //강의 검색
     const found = await this.lectureRepository.findOneBy({ id: lecture_id });
 
-    //해당 강의 작성이력 조회 +) 각년도 학기별로 1번씩 제한 기능 추가필요
+    //해당 강의 작성이력 조회
     const found_user = await this.recordRepository.findOne({
       relations: {
         lecture: true,
         user: true,
+        years: true,
+        semesters: true,
       },
       where: {
         user: {
@@ -63,6 +65,12 @@ export class RecordService {
         },
         lecture: {
           id: lecture_id,
+        },
+        years: {
+          year: year,
+        },
+        semesters: {
+          id: semester_id,
         },
       },
     });
