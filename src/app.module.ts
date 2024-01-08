@@ -16,10 +16,8 @@ import { SemesterModule } from './semester/semester.module';
 import { Semester } from './semester/entity/semester.entity';
 import { YearModule } from './year/year.module';
 import { Year } from './year/entity/year.entity';
-import { UserAuthModule } from './user_auth/user_auth.module';
-import { UserAuth } from './user_auth/entity/user-auth.entity';
 import { AssignmentModule } from './assignment/assignment.module';
-import {Assignment} from "./assignment/entity/assignment.entity";
+import { Assignment } from './assignment/entity/assignment.entity';
 
 @Module({
   imports: [
@@ -32,7 +30,7 @@ import {Assignment} from "./assignment/entity/assignment.entity";
         DATABASE_PASSWORD: Joi.string().required(),
         CLIENT_ID: Joi.string().required(),
         CLIENT_SECRET_KEY: Joi.string().required(),
-      }), 
+      }),
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -45,7 +43,16 @@ import {Assignment} from "./assignment/entity/assignment.entity";
           username: configService.get('DATABASE_USER'),
           password: configService.get('DATABASE_PASSWORD'),
           database: configService.get('DATABASE_DBNAME'),
-          entities: [Lecture, Prof, Record, Scoring, User, Semester, Year, UserAuth, Assignment],
+          entities: [
+            Lecture,
+            Prof,
+            Record,
+            Scoring,
+            User,
+            Semester,
+            Year,
+            Assignment,
+          ],
           synchronize: true, //when push change  false
         };
       },
@@ -57,7 +64,6 @@ import {Assignment} from "./assignment/entity/assignment.entity";
     UserModule,
     SemesterModule,
     YearModule,
-    UserAuthModule,
     AssignmentModule,
   ],
   controllers: [],
