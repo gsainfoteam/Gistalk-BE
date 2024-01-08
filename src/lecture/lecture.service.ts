@@ -69,31 +69,31 @@ export class LectureService {
   }
 
   /**강의 아이디 조회 API*/
-  // async getLectureId(lecture_code : string, prof_name :string)
-  // {
-  //   const found = await this.lectureRepository.find({
-  //     select : {
-  //       id : true,
-  //       lecture_code : true,
-  //     },
-  //     relations : {
-  //       prof : true
-  //     },
-  //     where : {
-  //       lecture_code : await this.toListForm(lecture_code),
-  //       prof : {
-  //         prof_name : prof_name,
-  //         lectures : false
-  //       }
-  //     }
-  //   })
+  async getLectureId(lecture_code: string, prof_id: number) {
+    const found = await this.lectureRepository.find({
+      select: {
+        id: true,
+        lecture_code: true,
+      },
+      relations: {
+        prof: true,
+      },
+      where: {
+        lecture_code: await this.toListForm(lecture_code),
+        prof: {
+          id: prof_id,
+          lectures: false,
+        },
+      },
+    });
 
-  //   if(found.length == 0)
-  //   {
-  //     throw new NotFoundException(`해당되는 강의 코드의 강의가 없습니다. 강의코드 : ${lecture_code}`);
-  //   }
-  //   return await this.json_filter(found)
-  // }
+    if (found.length == 0) {
+      throw new NotFoundException(
+        `해당되는 강의 코드의 강의가 없습니다. 강의코드 : ${lecture_code}`,
+      );
+    }
+    return await this.json_filter(found);
+  }
 
   /**강의 추가 API*/
   //기존에 없는 강의를 추가할 떄, 교수자를 추가할 때, must be set the professror data before use this API.
@@ -171,8 +171,7 @@ export class LectureService {
       prof_id: src_prof_id,
       prof_name: src_prof_name,
     };
-    const json = JSON.stringify(obj);
-    console.log(json);
+    var json = JSON.stringify(obj);
     return json;
   }
 
