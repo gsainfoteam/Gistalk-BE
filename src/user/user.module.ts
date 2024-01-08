@@ -12,16 +12,19 @@ import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
-    PassportModule.register({defaultStrategy: 'jwt'}),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret:'gistalk2023',
-      signOptions:{
-        expiresIn: '3h',// 나중에 프엔 개발용 토큰은 '10y'으로 발급합니다
-      }
-    })
-    ,HttpModule, TypeOrmModule.forFeature([User])],
+      global: true,
+      secret: 'gistalk2023',
+      signOptions: {
+        expiresIn: '3h', // 나중에 프엔 개발용 토큰은 '10y'으로 발급합니다
+      },
+    }),
+    HttpModule,
+    TypeOrmModule.forFeature([User]),
+  ],
   providers: [UserService, JwtStrategy],
   controllers: [UserController],
-  exports : [JwtStrategy, PassportModule]
+  exports: [JwtStrategy, PassportModule],
 })
 export class UserModule {}
