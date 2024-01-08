@@ -122,35 +122,4 @@ export class RecordService {
       }
     }
   }
-
-  //강의평가 수정 API
-  async updateRecord(
-    lecture_id: number,
-    user_id: string,
-    modify: UpdateRecordDto,
-  ): Promise<any> {
-    const { difficulty, strength, helpful, interest, lots, satisfy, oneline } =
-      modify;
-
-    const record = await this.recordRepository.findOne({
-      relations: {
-        lecture: true,
-      },
-      where: {
-        lecture: {
-          id: lecture_id,
-        },
-      },
-    });
-
-    record.difficulty = difficulty;
-    record.strength = strength;
-    record.helpful = helpful;
-    record.interest = interest;
-    record.lots = lots;
-    record.satisfy = satisfy;
-    record.review = oneline;
-    await this.recordRepository.save(record);
-    return 'success';
-  }
 }
