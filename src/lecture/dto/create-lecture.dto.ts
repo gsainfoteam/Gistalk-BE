@@ -3,5 +3,5 @@ export class CreateLectureDto {
 
   readonly lecture_name: string;
 
-  readonly prof_name: string;
+  readonly prof_id: number;
 }

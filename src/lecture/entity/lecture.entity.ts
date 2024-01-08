@@ -9,6 +9,7 @@ import {
   OneToMany,
   JoinColumn,
   OneToOne,
+  ManyToMany,
 } from 'typeorm';
 
 @Entity()
@@ -22,14 +23,13 @@ export class Lecture {
   @Column()
   lecture_name: string;
 
-  @ManyToOne((Type) => Prof, { cascade: true })
-  @JoinColumn()
-  prof: Prof;
-
   @OneToMany((Type) => Record, (record) => record.lecture)
   records: Record[];
 
   @OneToOne(() => Scoring, (socring) => socring.lecture)
   scoring: Scoring;
+
+  @ManyToMany(() => Prof, (prof) => prof.lectures)
+  prof: Prof[];
 }
 // prof => prof.prof_name,
