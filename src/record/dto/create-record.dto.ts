@@ -2,11 +2,8 @@ import {
   IsInt,
   IsNumberString,
   IsPositive,
-  IsString,
   Length,
   Max,
-  MaxLength,
-  max,
 } from 'class-validator';
 
 export class CreateRecordDto {
@@ -50,7 +47,7 @@ export class CreateRecordDto {
 
   @IsInt()
   @IsPositive()
-  @Max(1)
+  @Max(4)
   readonly semester_id: number;
 
   @IsNumberString()
