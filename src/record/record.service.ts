@@ -7,7 +7,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Lecture } from 'src/lecture/entity/lecture.entity';
 import { Repository } from 'typeorm';
 import { CreateRecordDto } from './dto/create-record.dto';
-import { UpdateRecordDto } from './dto/update-record.dto';
 import { Record } from './entity/record.entity';
 import { Semester } from 'src/semester/entity/semester.entity';
 import { Year } from 'src/year/entity/year.entity';
