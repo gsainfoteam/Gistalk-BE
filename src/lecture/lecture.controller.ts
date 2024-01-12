@@ -20,12 +20,12 @@ export class LectureController {
   constructor(private readonly lectureService: LectureService) {}
 
   //강의 코드, 교수명으로 강의 아이디 조회 API
-  @Get('getting')
+  @Get('info')
   getLectureId(
     @Query('lecture_code') lecture_code: string,
-    @Query('prof_name') prof_name: string,
+    @Query('prof_name') prof_id: number,
   ): Promise<any> {
-    return this.lectureService.getLectureId(lecture_code, prof_name);
+    return this.lectureService.getLectureId(lecture_code, prof_id);
   }
 
   //강좌별 강의 평가 조회 API
@@ -36,8 +36,8 @@ export class LectureController {
 
   //강의추가 API
   @Post('/add')
-  createProfLecture(@Body() lectureData: CreateLectureDto): Promise<string> {
-    return this.lectureService.createProfLecture(lectureData);
+  createLecture(@Body() lectureData: CreateLectureDto): Promise<string> {
+    return this.lectureService.createLecture(lectureData);
   }
 
   //강의 삭제 API

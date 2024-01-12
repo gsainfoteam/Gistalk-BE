@@ -36,8 +36,8 @@ export class Scoring {
   @Column()
   sati_aver: number;
 
-  @Column()
-  total_score: string;
+  // @Column()
+  // total_score: string;
 
   @OneToOne(() => Lecture, (lecture) => lecture.scoring)
   @JoinColumn()

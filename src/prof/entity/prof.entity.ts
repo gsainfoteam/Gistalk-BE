@@ -4,10 +4,8 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToMany,
-  PrimaryColumn,
-  Unique,
-  JoinColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 @Entity()
@@ -18,7 +16,7 @@ export class Prof {
   @Column({ unique: true })
   prof_name: string;
 
-  @OneToMany((Type) => Lecture, (lecture) => lecture.prof, { eager: true }) //eager
+  @ManyToMany(() => Lecture, (lectures) => lectures.prof)
+  @JoinTable()
   lectures: Lecture[];
 }
- 

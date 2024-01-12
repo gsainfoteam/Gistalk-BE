@@ -7,7 +7,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Lecture } from 'src/lecture/entity/lecture.entity';
 import { Repository } from 'typeorm';
 import { CreateRecordDto } from './dto/create-record.dto';
-import { UpdateRecordDto } from './dto/update-record.dto';
 import { Record } from './entity/record.entity';
 import { Semester } from 'src/semester/entity/semester.entity';
 import { Year } from 'src/year/entity/year.entity';
@@ -51,11 +50,13 @@ export class RecordService {
     //강의 검색
     const found = await this.lectureRepository.findOneBy({ id: lecture_id });
 
-    //해당 강의 작성이력 조회 +) 각년도 학기별로 1번씩 제한 기능 추가필요
+    //해당 강의 작성이력 조회
     const found_user = await this.recordRepository.findOne({
       relations: {
         lecture: true,
         user: true,
+        years: true,
+        semesters: true,
       },
       where: {
         user: {
@@ -63,6 +64,12 @@ export class RecordService {
         },
         lecture: {
           id: lecture_id,
+        },
+        years: {
+          year: year,
+        },
+        semesters: {
+          id: semester_id,
         },
       },
     });
@@ -121,36 +128,5 @@ export class RecordService {
         );
       }
     }
-  }
-
-  //강의평가 수정 API
-  async updateRecord(
-    lecture_id: number,
-    user_id: string,
-    modify: UpdateRecordDto,
-  ): Promise<any> {
-    const { difficulty, strength, helpful, interest, lots, satisfy, oneline } =
-      modify;
-
-    const record = await this.recordRepository.findOne({
-      relations: {
-        lecture: true,
-      },
-      where: {
-        lecture: {
-          id: lecture_id,
-        },
-      },
-    });
-
-    record.difficulty = difficulty;
-    record.strength = strength;
-    record.helpful = helpful;
-    record.interest = interest;
-    record.lots = lots;
-    record.satisfy = satisfy;
-    record.review = oneline;
-    await this.recordRepository.save(record);
-    return 'success';
   }
 }
