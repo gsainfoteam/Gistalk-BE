@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  Query,
   Req,
   SetMetadata,
   UseGuards,
@@ -15,8 +16,8 @@ import { LoginUserDto } from './dto/login-user.dto';
 export class UserController {
   constructor(private readonly usersevice: UserService) {}
 
-  @Post('/join')
-  LogIn(@Body() loginuserDto: LoginUserDto): Promise<{ accessToken }> {
+  @Get('/join') // front-end set this path to redirect url /user/join
+  LogIn(@Query() loginuserDto: LoginUserDto): Promise<{ accessToken }> {
     return this.usersevice.LogIn(loginuserDto); //idp에서 발급받은 jwt token
   }
 

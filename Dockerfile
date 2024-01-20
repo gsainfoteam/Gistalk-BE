@@ -1,6 +1,6 @@
 # Step 1
 ## base image for Step 1: Node 14
-FROM node:14 AS builder
+FROM node:18 AS builder
 WORKDIR /app
 COPY package.json .
 COPY package-lock.json .

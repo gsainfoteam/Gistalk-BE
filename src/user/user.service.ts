@@ -3,7 +3,9 @@ import {
   ConflictException,
   Inject,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -13,6 +15,8 @@ import { User } from './entity/user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
 import { PaylaodDto } from './dto/payload.dto';
 import { AuthParse } from 'src/utils/utils';
+import { AxiosError, AxiosResponse } from 'axios';
+import { catchError, firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class UserService {
@@ -27,7 +31,38 @@ export class UserService {
   /**idp로 부터 get 요청을 통해 유저의 로그인 여부를 확인합니다.
    * 확인되었다면 Gistalk용 jwtToken을 리턴합니다
    */
-  async LogIn(Loginuserdto: LoginUserDto): Promise<any> {}
+  async LogIn({ code, state }: LoginUserDto): Promise<any> {
+    console.log('in login');
+    console.log(code);
+    const accessTokeResponse = await firstValueFrom(
+      this.httpService
+        .post(
+          'https://api.idp.gistory.me/oauth/token',
+          {
+            code: code,
+            grant_type: 'authorization_code',
+            redirect_uri: 'http://localhost:3000/user/join',
+          },
+          {
+            headers: { 'content-type': 'application/x-www-form-urlencoded' },
+            auth: {
+              username: this.configService.get<string>('CLIENT_ID'),
+              password: this.configService.get<string>('CLIENT_SECRET_KEY'),
+            },
+          },
+        )
+        .pipe(
+          catchError((err: AxiosError) => {
+            if (err.response?.status === 401) {
+              throw new UnauthorizedException('Invalid auth code');
+            }
+            throw new InternalServerErrorException('network error');
+          }),
+        ),
+    );
+
+    return accessTokeResponse.data;
+  }
 }
 
 // let { jwt_token, email, uuid } = Loginuserdto;
