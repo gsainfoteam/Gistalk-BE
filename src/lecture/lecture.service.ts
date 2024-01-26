@@ -144,6 +144,7 @@ export class LectureService {
   /**전공 리스트로 바꿔주는 함수*/
   async toListForm(data: string): Promise<string> {
     const arr = data.split(' ');
+
     let i: number;
 
     let result = '[';
