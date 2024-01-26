@@ -23,7 +23,7 @@ export class LectureController {
   @Get('info')
   getLectureId(
     @Query('lecture_code') lecture_code: string,
-    @Query('prof_name') prof_id: number,
+    @Query('prof_id') prof_id: number,
   ): Promise<any> {
     return this.lectureService.getLectureId(lecture_code, prof_id);
   }
