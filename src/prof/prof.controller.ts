@@ -19,11 +19,6 @@ import { AuthGuard } from '@nestjs/passport';
 export class ProfController {
   constructor(private readonly profService: ProfService) {}
 
-  @Get('all')
-  getAll(): Promise<Prof[]> {
-    return this.profService.getAll();
-  }
-
   @Get('get/:id')
   getProfInfo(@Param('id') id: number): Promise<any> {
     return this.profService.getProfInfo(id);

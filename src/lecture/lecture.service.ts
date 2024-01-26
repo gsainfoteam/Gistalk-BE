@@ -141,6 +141,20 @@ export class LectureService {
     return 'success';
   }
 
+  async getAll(): Promise<Lecture[]> {
+    return this.lectureRepository.find({
+      select: {
+        id: true,
+        lecture_code: true,
+        lecture_name: true,
+        prof: true,
+      },
+      relations: {
+        prof: true,
+      },
+    });
+  }
+
   /**전공 리스트로 바꿔주는 함수*/
   async toListForm(data: string): Promise<string> {
     const arr = data.split(' ');
