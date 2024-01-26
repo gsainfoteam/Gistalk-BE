@@ -34,6 +34,12 @@ export class LectureController {
     return this.lectureService.getLectureInfo(lecture_id);
   }
 
+  //모든 강의 불러오기 API
+  @Get('/all')
+  getAll(): Promise<Lecture[]> {
+    return this.lectureService.getAll();
+  }
+
   //강의추가 API
   @Post('/add')
   createLecture(@Body() lectureData: CreateLectureDto): Promise<string> {
