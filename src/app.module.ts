@@ -39,7 +39,7 @@ import { Assignment } from './assignment/entity/assignment.entity';
         return {
           type: 'mysql',
           host: configService.get('DATABASE_HOST'),
-          port: 3306,
+          port: configService.get('DATABASE_PORT'),
           username: configService.get('DATABASE_USER'),
           password: configService.get('DATABASE_PASSWORD'),
           database: configService.get('DATABASE_DBNAME'),
