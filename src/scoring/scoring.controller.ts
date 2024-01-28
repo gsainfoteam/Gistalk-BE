@@ -1,9 +1,10 @@
 import { Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ScoringService } from './scoring.service';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('SCROEING')
 @Controller('scoring')
-//@UseGuards(AuthGuard())
 export class ScoringController {
   constructor(private readonly scoringService: ScoringService) {}
 

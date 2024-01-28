@@ -13,9 +13,10 @@ import { UpdateProfDto } from './dto/update-des-prof.dto';
 import { Prof } from './entity/prof.entity';
 import { ProfService } from './prof.service';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('PROF')
 @Controller('profs')
-//@UseGuards(AuthGuard())
 export class ProfController {
   constructor(private readonly profService: ProfService) {}
 
