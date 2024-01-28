@@ -31,7 +31,7 @@ export class UserService {
   /**idp로 부터 get 요청을 통해 유저의 로그인 여부를 확인합니다.
    * 확인되었다면 Gistalk용 jwtToken을 리턴합니다
    */
-  async LogIn({ code, state }: LoginUserDto): Promise<any> {
+  async LogIn({ code }: LoginUserDto): Promise<any> {
     console.log('in login');
     console.log(code);
     const accessTokeResponse = await firstValueFrom(
