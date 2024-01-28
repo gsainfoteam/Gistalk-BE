@@ -11,7 +11,9 @@ import {
 import { CreateRecordDto } from './dto/create-record.dto';
 import { RecordService } from './record.service';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('RECORD')
 @Controller('records')
 //@UseGuards(AuthGuard())
 export class RecordController {

@@ -13,9 +13,10 @@ import { CreateLectureDto } from './dto/create-lecture.dto';
 import { Lecture } from './entity/lecture.entity';
 import { LectureService } from './lecture.service';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('lectures')
-//@UseGuards(AuthGuard())
+@ApiTags('USERS')
+@Controller('LECTURE')
 export class LectureController {
   constructor(private readonly lectureService: LectureService) {}
 
