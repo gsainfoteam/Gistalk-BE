@@ -15,8 +15,8 @@ import { LectureService } from './lecture.service';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags('USERS')
-@Controller('LECTURE')
+@ApiTags('LECTURE')
+@Controller('lectures')
 export class LectureController {
   constructor(private readonly lectureService: LectureService) {}
 
