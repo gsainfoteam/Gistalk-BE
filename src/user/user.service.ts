@@ -16,7 +16,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { PaylaodDto } from './dto/payload.dto';
 import { AuthParse } from 'src/utils/utils';
 import { AxiosError, AxiosResponse } from 'axios';
-import { catchError, firstValueFrom } from 'rxjs';
+import { catchError, firstValueFrom, timestamp } from 'rxjs';
 
 @Injectable()
 export class UserService {
@@ -63,7 +63,7 @@ export class UserService {
         ),
     );
     console.log(type);
-    console.log(accessTokeResponse.data);
+    console.log(timestamp, accessTokeResponse.data);
     return accessTokeResponse.data;
   }
 }
