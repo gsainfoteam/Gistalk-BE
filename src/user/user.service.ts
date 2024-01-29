@@ -32,6 +32,9 @@ export class UserService {
    * 확인되었다면 Gistalk용 jwtToken을 리턴합니다
    */
   async LogIn({ code, type }: LoginUserDto): Promise<any> {
+    console.log(code);
+    console.log(type);
+    console.log(timestamp);
     const url = this.configService.get<string>('IDP_URL');
     const accessTokeResponse = await firstValueFrom(
       this.httpService
