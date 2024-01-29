@@ -31,10 +31,7 @@ export class UserService {
   /**idp로 부터 get 요청을 통해 유저의 로그인 여부를 확인합니다.
    * 확인되었다면 Gistalk용 jwtToken을 리턴합니다
    */
-  async LogIn({ code }: LoginUserDto): Promise<any> {
-    console.log('in login');
-    console.log(code);
-
+  async LogIn({ code, type }: LoginUserDto): Promise<any> {
     const url = this.configService.get<string>('IDP_URL');
     const accessTokeResponse = await firstValueFrom(
       this.httpService
@@ -43,7 +40,10 @@ export class UserService {
           {
             code: code,
             grant_type: 'authorization_code',
-            redirect_uri: this.configService.get<string>('REDIRECT_URL'),
+            redirect_uri:
+              type == 'dev'
+                ? this.configService.get<string>('LOCAL_REDIRECT_URL')
+                : this.configService.get<string>('STG_REDIRECT_URL'),
           },
           {
             headers: { 'content-type': 'application/x-www-form-urlencoded' },
@@ -62,7 +62,7 @@ export class UserService {
           }),
         ),
     );
-
+    console.log(accessTokeResponse.data);
     return accessTokeResponse.data;
   }
 }
