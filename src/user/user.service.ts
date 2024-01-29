@@ -60,7 +60,7 @@ export class UserService {
           )
           .pipe(
             catchError((err: AxiosError) => {
-              if (err.response?.status === 401) {
+              if (err.response?.status === 400) {
                 throw new UnauthorizedException('Invalid auth code');
               }
               throw new InternalServerErrorException('network error');
