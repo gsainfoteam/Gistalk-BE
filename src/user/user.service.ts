@@ -62,6 +62,7 @@ export class UserService {
           }),
         ),
     );
+    console.log(type);
     console.log(accessTokeResponse.data);
     return accessTokeResponse.data;
   }
