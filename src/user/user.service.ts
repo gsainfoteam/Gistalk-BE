@@ -34,39 +34,44 @@ export class UserService {
   async LogIn({ code, type }: LoginUserDto): Promise<any> {
     console.log(code);
     console.log(type);
-    console.log(timestamp);
+    console.log(Date());
     const url = this.configService.get<string>('IDP_URL');
-    const accessTokeResponse = await firstValueFrom(
-      this.httpService
-        .post(
-          url,
-          {
-            code: code,
-            grant_type: 'authorization_code',
-            redirect_uri:
-              type == 'dev'
-                ? this.configService.get<string>('LOCAL_REDIRECT_URL')
-                : this.configService.get<string>('STG_REDIRECT_URL'),
-          },
-          {
-            headers: { 'content-type': 'application/x-www-form-urlencoded' },
-            auth: {
-              username: this.configService.get<string>('CLIENT_ID'),
-              password: this.configService.get<string>('CLIENT_SECRET_KEY'),
+    try {
+      const accessTokeResponse = await firstValueFrom(
+        this.httpService
+          .post(
+            url,
+            {
+              code: code,
+              grant_type: 'authorization_code',
+              redirect_uri:
+                type == 'dev'
+                  ? this.configService.get<string>('LOCAL_REDIRECT_URL')
+                  : this.configService.get<string>('STG_REDIRECT_URL'),
             },
-          },
-        )
-        .pipe(
-          catchError((err: AxiosError) => {
-            if (err.response?.status === 401) {
-              throw new UnauthorizedException('Invalid auth code');
-            }
-            throw new InternalServerErrorException('network error');
-          }),
-        ),
-    );
-    console.log(type);
-    console.log(timestamp, accessTokeResponse.data);
-    return accessTokeResponse.data;
+            {
+              headers: { 'content-type': 'application/x-www-form-urlencoded' },
+              auth: {
+                username: this.configService.get<string>('CLIENT_ID'),
+                password: this.configService.get<string>('CLIENT_SECRET_KEY'),
+              },
+            },
+          )
+          .pipe(
+            catchError((err: AxiosError) => {
+              if (err.response?.status === 401) {
+                throw new UnauthorizedException('Invalid auth code');
+              }
+              throw new InternalServerErrorException('network error');
+            }),
+          ),
+      );
+      console.log(type);
+      console.log(Date(), accessTokeResponse.data);
+      return accessTokeResponse.data;
+    } catch (e) {
+      console.log(e);
+    }
+    return 'Failed to idp call';
   }
 }
