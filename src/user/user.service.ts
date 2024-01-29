@@ -34,14 +34,16 @@ export class UserService {
   async LogIn({ code }: LoginUserDto): Promise<any> {
     console.log('in login');
     console.log(code);
+
+    const url = this.configService.get<string>('IDP_URL');
     const accessTokeResponse = await firstValueFrom(
       this.httpService
         .post(
-          'https://api.idp.gistory.me/oauth/token',
+          url,
           {
             code: code,
             grant_type: 'authorization_code',
-            redirect_uri: 'https://api.stg.gistalk.gistory.me/user/join',
+            redirect_uri: this.configService.get<string>('REDIRECT_URL'),
           },
           {
             headers: { 'content-type': 'application/x-www-form-urlencoded' },
