@@ -9,10 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CreateProfDto } from './dto/create-prof.dto';
-import { UpdateProfDto } from './dto/update-des-prof.dto';
-import { Prof } from './entity/prof.entity';
 import { ProfService } from './prof.service';
-import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('PROF')
