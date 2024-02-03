@@ -37,7 +37,6 @@ export class CreateRecordDto {
   @Max(5)
   readonly satisfy: number;
 
-  @IsNumberString()
   @Length(15, 255)
   readonly review: string;
 

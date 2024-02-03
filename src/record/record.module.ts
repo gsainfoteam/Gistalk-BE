@@ -8,11 +8,23 @@ import { UserModule } from 'src/user/user.module';
 import { Semester } from 'src/semester/entity/semester.entity';
 import { Year } from 'src/year/entity/year.entity';
 import { User } from 'src/user/entity/user.entity';
+import { ScoringService } from 'src/scoring/scoring.service';
+import { Scoring } from 'src/scoring/entity/scoring.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Record, Lecture, Semester, Record, Year, User]),
-  UserModule],
-  providers: [RecordService],
+  imports: [
+    TypeOrmModule.forFeature([
+      Record,
+      Lecture,
+      Semester,
+      Record,
+      Year,
+      User,
+      Scoring,
+    ]),
+    UserModule,
+  ],
+  providers: [RecordService, ScoringService],
   controllers: [RecordController],
 })
 export class RecordModule {}
