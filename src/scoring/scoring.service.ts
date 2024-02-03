@@ -68,7 +68,7 @@ export class ScoringService {
       return 'aleady calculated lecture.';
     }
     if (people) {
-      this.scoringFuntion('post', lecture, people, main_lecture_id);
+      await this.scoringFuntion('post', lecture, people, main_lecture_id);
     }
 
     return 'success';
