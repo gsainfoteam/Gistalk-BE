@@ -24,7 +24,6 @@ export class UserService {
     private readonly httpService: HttpService,
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    private jwtService: JwtService,
     private configService: ConfigService,
   ) {}
 
