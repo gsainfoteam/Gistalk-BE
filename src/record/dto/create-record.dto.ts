@@ -44,6 +44,10 @@ export class CreateRecordDto {
   @IsPositive()
   readonly lecture_id: number;
 
+  // @IsInt()
+  // @IsPositive()
+  // readonly prof_id: number;
+
   @IsInt()
   @IsPositive()
   @Max(4)
