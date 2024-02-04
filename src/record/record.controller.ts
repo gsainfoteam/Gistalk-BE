@@ -1,5 +1,6 @@
 import {
   Body,
+  ConflictException,
   Controller,
   Get,
   Param,
@@ -38,8 +39,7 @@ export class RecordController {
       await this.scoringService.scoring(createrecorddto.lecture_id); // 강의평 평점 계산
       return 'success';
     } catch (error) {
-      console.error('Error creating record:', error.message);
-      return error;
+      throw new ConflictException('이미 강의를 평가');
     }
   }
 }
