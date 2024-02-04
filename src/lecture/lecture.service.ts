@@ -22,7 +22,7 @@ export class LectureService {
   ) {}
 
   /**강좌별 강의 평가 조회  API*/
-  async getLectureInfo(lecture_id: number): Promise<any> {
+  async getLectureInfo(lecture_id: number, prof_id?: number): Promise<any> {
     const found = await this.lectureRepository.findOneBy({ id: lecture_id });
 
     if (!found) {
@@ -30,41 +30,69 @@ export class LectureService {
         `ID에 할당된 강의가 없습니다 ID : ${lecture_id}`,
       );
     } else {
-      const lecture = await this.lectureRepository.findOne({
-        relations: {
-          records: {
-            years: true,
-            semesters: true,
-            user: true,
+      let lecture;
+      if (prof_id) {
+        lecture = await this.lectureRepository.findOne({
+          relations: {
+            prof: true,
+            records: {
+              years: true,
+              semesters: true,
+              user: true,
+              prof: true,
+            },
           },
-        },
-        where: {
-          id: lecture_id,
-        },
-      });
-
-      const obj_list = [];
-      const filter = lecture.records;
-      for (var i = 0; i < filter.length; i++) {
-        const parse: any = filter[i];
-        const obj = {
-          record_id: parse.id,
-          difficulty: parse.difficulty,
-          strength: parse.strength,
-          helpful: parse.helpful,
-          interest: parse.interest,
-          lots: parse.lots,
-          satisfy: parse.satisfy,
-          review: parse.review,
-          evaluation: parse.evaluation,
-          semester: parse.semesters.id,
-          year: parse.years.year,
-          writer_id: parse.user.id,
-        };
-        obj_list.push(obj);
+          where: {
+            id: lecture_id,
+            prof: {
+              id: prof_id,
+            },
+          },
+        });
+      } else {
+        lecture = await this.lectureRepository.findOne({
+          relations: {
+            prof: true,
+            records: {
+              years: true,
+              semesters: true,
+              user: true,
+              prof: true,
+            },
+          },
+          where: {
+            id: lecture_id,
+          },
+        });
       }
+      try {
+        const filter = lecture.records;
 
-      return obj_list;
+        const obj_list = [];
+        for (var i = 0; i < filter.length; i++) {
+          const parse: any = filter[i];
+          const obj = {
+            record_id: parse.id,
+            difficulty: parse.difficulty,
+            strength: parse.strength,
+            helpful: parse.helpful,
+            interest: parse.interest,
+            lots: parse.lots,
+            satisfy: parse.satisfy,
+            review: parse.review,
+            evaluation: parse.evaluation,
+            semester: parse.semesters.id,
+            year: parse.years.year,
+            writer_id: parse.user.id,
+            prof_id: parse.prof.id,
+          };
+          obj_list.push(obj);
+        }
+
+        return obj_list;
+      } catch (err) {
+        throw new NotFoundException('There is no lecture.');
+      }
     }
   }
 
