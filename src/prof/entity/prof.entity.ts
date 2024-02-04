@@ -1,4 +1,5 @@
 import { Lecture } from 'src/lecture/entity/lecture.entity';
+import { Record } from 'src/record/entity/record.entity';
 import { Scoring } from 'src/scoring/entity/scoring.entity';
 import {
   Entity,
@@ -6,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -15,6 +17,9 @@ export class Prof {
 
   @Column({ unique: true })
   prof_name: string;
+
+  @OneToMany((Type) => Record, (record) => record.prof)
+  records: Record[];
 
   @ManyToMany(() => Lecture, (lectures) => lectures.prof)
   @JoinTable()

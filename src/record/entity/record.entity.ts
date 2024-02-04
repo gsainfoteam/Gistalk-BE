@@ -1,4 +1,5 @@
 import { Lecture } from 'src/lecture/entity/lecture.entity';
+import { Prof } from 'src/prof/entity/prof.entity';
 import { Semester } from 'src/semester/entity/semester.entity';
 import { User } from 'src/user/entity/user.entity';
 import { Year } from 'src/year/entity/year.entity';
@@ -11,7 +12,8 @@ import {
   Unique,
   ManyToMany,
   ManyToOne,
-  JoinTable, OneToOne,
+  JoinTable,
+  OneToOne,
 } from 'typeorm';
 
 @Entity()
@@ -40,14 +42,20 @@ export class Record {
   @Column()
   review: string;
 
-  @Column({default : 2})
-  evaluation : number // 추천 1 비추천 0 표시 없음 2
+  @Column({ default: 2 })
+  evaluation: number; // 추천 1 비추천 0 표시 없음 2
 
   @ManyToOne((Type) => Lecture, (lecture) => lecture.lecture_name, {
     cascade: true,
     eager: true,
   })
   lecture: Lecture;
+
+  @ManyToOne((Type) => Prof, (prof) => prof.id, {
+    cascade: true,
+    eager: true,
+  })
+  prof: Prof;
 
   @ManyToOne((Type) => Semester, { cascade: true })
   @JoinTable()
