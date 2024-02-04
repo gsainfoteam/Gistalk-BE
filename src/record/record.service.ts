@@ -46,6 +46,7 @@ export class RecordService {
       semester_id,
       year,
       user_id,
+      // prof_id,
     } = createrecorddto;
     //강의 검색
     const found = await this.lectureRepository.findOneBy({ id: lecture_id });

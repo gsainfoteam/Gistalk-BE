@@ -55,7 +55,7 @@ export class ScoringService {
     }
   }
 
-  // 강의 평점 계산 & 육각형 API
+  // 강의 평점 계산 & 6개 평가 지표 API
   async scoring(main_lecture_id: number): Promise<any> {
     const lecture = await this.getLectureInfo(main_lecture_id * 1); //1곱하지말고 parseInt pipe만드는게 좋을듯
     const people = lecture.records.length;
@@ -65,12 +65,10 @@ export class ScoringService {
       },
     });
     if (found) {
-      throw new NotFoundException(
-        `해당 강의는 이미 최소 1번 이상 계산되었습니다`,
-      );
+      return 'aleady calculated lecture.';
     }
     if (people) {
-      this.scoringFuntion('post', lecture, people, main_lecture_id);
+      await this.scoringFuntion('post', lecture, people, main_lecture_id);
     }
 
     return 'success';

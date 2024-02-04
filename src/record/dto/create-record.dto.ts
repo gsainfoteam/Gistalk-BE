@@ -37,13 +37,16 @@ export class CreateRecordDto {
   @Max(5)
   readonly satisfy: number;
 
-  @IsNumberString()
   @Length(15, 255)
   readonly review: string;
 
   @IsInt()
   @IsPositive()
   readonly lecture_id: number;
+
+  // @IsInt()
+  // @IsPositive()
+  // readonly prof_id: number;
 
   @IsInt()
   @IsPositive()

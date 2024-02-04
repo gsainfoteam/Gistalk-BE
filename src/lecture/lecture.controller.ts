@@ -12,7 +12,6 @@ import {
 import { CreateLectureDto } from './dto/create-lecture.dto';
 import { Lecture } from './entity/lecture.entity';
 import { LectureService } from './lecture.service';
-import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('LECTURE')

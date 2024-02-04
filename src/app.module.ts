@@ -18,6 +18,7 @@ import { YearModule } from './year/year.module';
 import { Year } from './year/entity/year.entity';
 import { AssignmentModule } from './assignment/assignment.module';
 import { Assignment } from './assignment/entity/assignment.entity';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [

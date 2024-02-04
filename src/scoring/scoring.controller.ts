@@ -1,6 +1,5 @@
 import { Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ScoringService } from './scoring.service';
-import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('SCROEING')
@@ -16,7 +15,9 @@ export class ScoringController {
 
   //강평 점수 계산한 것 가져오기
   @Get('get/:lecture_id')
-  getScoring(@Param('lecture_id') lecture_id: number): Promise<any> {
+  async getScoring(@Param('lecture_id') lecture_id: number): Promise<any> {
+    await this.scoringService.scoring(lecture_id);
+    await this.scoringService.updateScoring(lecture_id);
     return this.scoringService.getScoring(lecture_id);
   }
 

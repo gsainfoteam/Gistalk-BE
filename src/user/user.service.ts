@@ -24,7 +24,6 @@ export class UserService {
     private readonly httpService: HttpService,
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    private jwtService: JwtService,
     private configService: ConfigService,
   ) {}
 
@@ -36,7 +35,7 @@ export class UserService {
     console.log(code);
     console.log(type);
     console.log(curr);
-    const url = this.configService.get<string>('IDP_URL');
+    const url = this.configService.get<string>('IDP_URL') + '/token';
     try {
       const accessTokeResponse = await firstValueFrom(
         this.httpService
