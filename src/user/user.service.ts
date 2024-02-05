@@ -1,20 +1,14 @@
 import { HttpService } from '@nestjs/axios';
 import {
-  ConflictException,
-  Inject,
   Injectable,
   InternalServerErrorException,
-  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entity/user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
-import { PaylaodDto } from './dto/payload.dto';
-import { AuthParse } from 'src/utils/utils';
 import { AxiosError, AxiosResponse } from 'axios';
 import { catchError, firstValueFrom, timestamp } from 'rxjs';
 
