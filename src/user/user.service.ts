@@ -11,6 +11,7 @@ import { User } from './entity/user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
 import { AxiosError, AxiosResponse } from 'axios';
 import { catchError, firstValueFrom, timestamp } from 'rxjs';
+import { userInfo } from 'os';
 
 @Injectable()
 export class UserService {
@@ -67,5 +68,14 @@ export class UserService {
       console.log(e);
     }
     return 'Failed to idp call';
+  }
+
+  async userInfo(token: string): Promise<any> {
+    const url = this.configService.get<string>('IDP_URL') + '/userinfo';
+    const result = await this.httpService.get(url, {
+      headers: { Authorization: token },
+    });
+    console.log(result);
+    return result;
   }
 }
