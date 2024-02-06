@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   Param,
-  Patch,
   Post,
   Query,
   UseGuards,
@@ -13,6 +12,7 @@ import { CreateLectureDto } from './dto/create-lecture.dto';
 import { Lecture } from './entity/lecture.entity';
 import { LectureService } from './lecture.service';
 import { ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '../user/auth/auth.guard';
 
 @ApiTags('LECTURE')
 @Controller('lectures')
@@ -20,6 +20,7 @@ export class LectureController {
   constructor(private readonly lectureService: LectureService) {}
 
   //강의 코드, 교수명으로 강의 아이디 조회 API
+  @UseGuards(AuthGuard)
   @Get()
   ping() {
     return 'hello world';
@@ -34,9 +35,12 @@ export class LectureController {
   }
 
   //강좌별 강의 평가 조회 API
-  @Get('get/:lecture_id')
-  getLectureInfo(@Param('lecture_id') lecture_id: number): Promise<any> {
-    return this.lectureService.getLectureInfo(lecture_id);
+  @Get('get')
+  getLectureInfo(
+    @Query('lecture_id') lecture_id: number,
+    @Query('prof_id') prof_id?: number,
+  ): Promise<any> {
+    return this.lectureService.getLectureInfo(lecture_id, prof_id);
   }
 
   //모든 강의 불러오기 API
