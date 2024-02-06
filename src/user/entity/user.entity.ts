@@ -11,16 +11,12 @@ import {
 } from 'typeorm';
 
 @Entity()
-@Unique(['email'])
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   uuid: string;
-
-  @Column()
-  email: string;
 
   @OneToMany((Type) => Record, (record) => record.user)
   records: Record[];

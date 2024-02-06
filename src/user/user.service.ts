@@ -12,6 +12,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { AxiosError, AxiosResponse } from 'axios';
 import { catchError, firstValueFrom, timestamp } from 'rxjs';
 import { userInfo } from 'os';
+import { error } from 'console';
 
 @Injectable()
 export class UserService {
@@ -63,6 +64,13 @@ export class UserService {
       );
       console.log(type);
       console.log(curr, accessTokeResponse.data);
+      // const user = await this.userRepository.findOneBy(uuid : accessTokeResponse.data.user_uuid);
+      // if(!user)
+      // {
+      //   const user1 = new User();
+      //   user1.uuid = accessTokeResponse.data.user_uuid;
+      //   await this.userRepository.save(user1);
+      // }
       return accessTokeResponse.data;
     } catch (e) {
       console.log(e);
@@ -72,10 +80,20 @@ export class UserService {
 
   async userInfo(token: string): Promise<any> {
     const url = this.configService.get<string>('IDP_URL') + '/userinfo';
-    const result = await this.httpService.get(url, {
-      headers: { Authorization: token },
-    });
-    console.log(result);
-    return result;
+    const params = { access_token: token };
+
+    const userInfoResponse = await firstValueFrom(
+      this.httpService.get(url, { params }).pipe(
+        catchError((err: AxiosError) => {
+          if (err.response?.status === 401) {
+            throw new UnauthorizedException('Invalid access');
+          }
+          throw new InternalServerErrorException('network error');
+        }),
+      ),
+    );
+
+    console.log(userInfoResponse.data);
+    return userInfoResponse.data;
   }
 }

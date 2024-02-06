@@ -7,12 +7,12 @@ import {
   Req,
   SetMetadata,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { AuthGuard } from '@nestjs/passport';
 import { LoginUserDto } from './dto/login-user.dto';
-import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger';
-import { any } from 'joi';
+import { ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from './auth/auth.guard';
 
 @ApiTags('USERS')
 @Controller('user')
@@ -21,11 +21,10 @@ export class UserController {
 
   @Get('/join') // front-end set this path to redirect url /user/join
   LogIn(@Query() loginuserDto: LoginUserDto): Promise<{ accessToken }> {
-    return this.usersevice.LogIn(loginuserDto); //idp에서 발급받은 jwt token
+    return this.usersevice.LogIn(loginuserDto);
   }
 
   @Get('/info')
-  @UseGuards(AuthGuard())
   UserIonfo(@Req() req) {
     return req.user;
   }
