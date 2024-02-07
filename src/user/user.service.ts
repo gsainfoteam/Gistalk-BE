@@ -27,8 +27,6 @@ export class UserService {
    * 확인되었다면 Gistalk용 jwtToken을 리턴합니다
    */
   async LogIn({ code, type }: LoginUserDto): Promise<any> {
-    console.log(code);
-    console.log(type);
     const url = this.configService.get<string>('IDP_URL') + '/token';
     try {
       const accessTokeResponse = await firstValueFrom(
@@ -60,21 +58,13 @@ export class UserService {
             }),
           ),
       );
-      console.log(type);
+      console.log(code, type);
       console.log(accessTokeResponse.data);
-      console.log(
-        '##############################################################',
-      );
       const user_info = await this.userInfo(
         accessTokeResponse.data.access_token,
       );
-      console.log(user_info);
-      const user = await this.userRepository.findOne({
-        where: {
-          uuid: user_info.user_uuid,
-        },
-      });
-      console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$', user);
+      console.log('user_info', user_info);
+      const user = this.findUserFromUuid(user_info.user_uuid);
       if (!user) {
         const user1 = new User();
         user1.uuid = user_info.user_uuid;
@@ -111,7 +101,6 @@ export class UserService {
         uuid: uuid,
       },
     });
-    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$', user);
     return user;
   }
 }
