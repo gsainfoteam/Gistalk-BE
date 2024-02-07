@@ -68,9 +68,10 @@ export class UserService {
       const user_info = await this.userInfo(
         accessTokeResponse.data.access_token,
       );
+      console.log(user_info);
       const user = await this.userRepository.findOne({
         where: {
-          uuid: user_info.uuid,
+          uuid: user_info.user_uuid,
         },
       });
       console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$', user);
