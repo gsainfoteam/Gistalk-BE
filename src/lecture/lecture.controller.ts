@@ -19,12 +19,12 @@ import { AuthGuard } from '../user/auth/auth.guard';
 export class LectureController {
   constructor(private readonly lectureService: LectureService) {}
 
-  //강의 코드, 교수명으로 강의 아이디 조회 API
   @Get()
   ping() {
     return 'hello world';
   }
 
+  //강의 코드, 교수명으로 강의 아이디 조회 API
   @Get('info')
   getLectureId(
     @Query('lecture_code') lecture_code: string,
