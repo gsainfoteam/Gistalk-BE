@@ -20,8 +20,8 @@ export class UserController {
   constructor(private readonly usersevice: UserService) {}
 
   @Get('/join') // front-end set this path to redirect url /user/join
-  LogIn(@Query() loginuserDto: LoginUserDto): Promise<{ accessToken }> {
-    return this.usersevice.LogIn(loginuserDto);
+  async LogIn(@Query() loginuserDto: LoginUserDto): Promise<{ accessToken }> {
+    return await this.usersevice.LogIn(loginuserDto);
   }
 
   @UseGuards(AuthGuard)
