@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Lecture } from 'src/lecture/entity/lecture.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { CreateRecordDto } from './dto/create-record.dto';
 import { Record } from './entity/record.entity';
 import { Semester } from 'src/semester/entity/semester.entity';
@@ -51,10 +51,8 @@ export class RecordService {
       lecture_id,
       semester_id,
       year,
-      user_id,
       prof_id,
     } = createrecorddto;
-    console.log(user_uuid);
     //강의 검색
     const found = await this.lectureRepository.findOne({
       relations: {
@@ -67,8 +65,8 @@ export class RecordService {
         },
       },
     });
-
-    if (found == null) {
+    console.log(found);
+    if (!found) {
       throw new NotFoundException(
         `해당되는 id : ${lecture_id} 강의가 없습니다.`,
       );
@@ -85,7 +83,7 @@ export class RecordService {
       },
       where: {
         user: {
-          id: user_id,
+          uuid: user_uuid,
         },
         lecture: {
           id: lecture_id,
@@ -119,7 +117,7 @@ export class RecordService {
           records: true,
         },
         where: {
-          id: user_id,
+          uuid: user_uuid,
         },
       });
       record.years = await this.yearRepository.findOne({
@@ -162,7 +160,6 @@ export class RecordService {
           },
         },
       });
-
       await this.recordRepository.manager.save(record);
       return 'success';
     }

@@ -56,6 +56,4 @@ export class CreateRecordDto {
   @IsNumberString()
   @Length(4, 4)
   readonly year: string;
-
-  readonly user_id: number; // @request req , req.headers.authorization으로 토큰 받아서 공개키 복호화 돌리기
 }
