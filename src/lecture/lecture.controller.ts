@@ -34,7 +34,6 @@ export class LectureController {
   }
 
   //강좌별 강의 평가 조회 API
-  @UseGuards(AuthGuard)
   @Get('get')
   getLectureInfo(
     @Query('lecture_id') lecture_id: number,
