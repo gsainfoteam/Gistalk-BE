@@ -103,4 +103,16 @@ export class UserService {
     });
     return user;
   }
+
+  async userRecords(uuid: string): Promise<any> {
+    const result = await this.userRepository.findOne({
+      relations: {
+        records: true,
+      },
+      where: {
+        uuid: uuid,
+      },
+    });
+    return result;
+  }
 }
