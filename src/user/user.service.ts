@@ -72,7 +72,8 @@ export class UserService {
         console.log('create user');
       }
       console.log('user', user);
-      return user;
+      console.log(accessTokeResponse.data);
+      return accessTokeResponse.data;
     } catch (e) {
       return e;
     }
