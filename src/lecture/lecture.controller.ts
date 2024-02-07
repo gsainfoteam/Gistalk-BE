@@ -20,7 +20,6 @@ export class LectureController {
   constructor(private readonly lectureService: LectureService) {}
 
   //강의 코드, 교수명으로 강의 아이디 조회 API
-  @UseGuards(AuthGuard)
   @Get()
   ping() {
     return 'hello world';

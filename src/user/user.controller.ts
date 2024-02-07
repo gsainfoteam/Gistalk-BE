@@ -26,6 +26,16 @@ export class UserController {
 
   @Get('/info')
   UserIonfo(@Req() req) {
-    return req.user;
+    return this.usersevice.userInfo(
+      req.headers.authorization.split(' ').slice(-1)[0],
+    );
+  }
+
+  @Get('/record')
+  async UserRecord(@Req() req) {
+    const user = await this.usersevice.userInfo(
+      req.headers.authorization.split(' ').slice(-1)[0],
+    );
+    return await this.usersevice.userRecords(user.user_uuid);
   }
 }
