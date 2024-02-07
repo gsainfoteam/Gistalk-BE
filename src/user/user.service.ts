@@ -64,13 +64,20 @@ export class UserService {
       );
       console.log(type);
       console.log(curr, accessTokeResponse.data);
-      // const user = await this.userRepository.findOneBy(uuid : accessTokeResponse.data.user_uuid);
-      // if(!user)
-      // {
-      //   const user1 = new User();
-      //   user1.uuid = accessTokeResponse.data.user_uuid;
-      //   await this.userRepository.save(user1);
-      // }
+      console.log(
+        '##############################################################',
+      );
+
+      const user = await this.findUserFromUuid(
+        accessTokeResponse.data.user_uuid,
+      );
+      console.log(user);
+      if (!user) {
+        const user1 = new User();
+        user1.uuid = accessTokeResponse.data.user_uuid;
+        await this.userRepository.save(user1);
+        console.log('create user');
+      }
       return accessTokeResponse.data;
     } catch (e) {
       console.log(e);
@@ -95,5 +102,13 @@ export class UserService {
 
     console.log(userInfoResponse.data);
     return userInfoResponse.data;
+  }
+  async findUserFromUuid(uuid: string): Promise<any> {
+    const user = await this.userRepository.findOne({
+      where: {
+        uuid: uuid,
+      },
+    });
+    return user;
   }
 }
