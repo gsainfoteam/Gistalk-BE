@@ -71,11 +71,11 @@ export class UserService {
         await this.userRepository.save(user1);
         console.log('create user');
       }
+      console.log('user', user);
       return user;
     } catch (e) {
-      console.log(e);
+      return e;
     }
-    return 'Failed to idp call';
   }
 
   async userInfo(token: string): Promise<any> {
