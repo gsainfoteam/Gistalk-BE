@@ -27,10 +27,8 @@ export class UserService {
    * 확인되었다면 Gistalk용 jwtToken을 리턴합니다
    */
   async LogIn({ code, type }: LoginUserDto): Promise<any> {
-    const curr = new Date();
     console.log(code);
     console.log(type);
-    console.log(curr);
     const url = this.configService.get<string>('IDP_URL') + '/token';
     try {
       const accessTokeResponse = await firstValueFrom(
@@ -63,22 +61,21 @@ export class UserService {
           ),
       );
       console.log(type);
-      console.log(curr, accessTokeResponse.data);
+      console.log(accessTokeResponse.data);
       console.log(
         '##############################################################',
       );
-      const user_uuid = await this.userInfo(
+      const user_info = await this.userInfo(
         accessTokeResponse.data.access_token,
       );
-      const user = await this.findUserFromUuid(user_uuid);
-      console.log(user);
-      if (!user) {
+      const user = await this.findUserFromUuid(user_info.user_uuid);
+      if (!user.user_uuid) {
         const user1 = new User();
-        user1.uuid = accessTokeResponse.data.user_uuid;
+        user1.uuid = user.user_uuid;
         await this.userRepository.save(user1);
         console.log('create user');
       }
-      return accessTokeResponse.data;
+      return user;
     } catch (e) {
       console.log(e);
     }
@@ -100,7 +97,6 @@ export class UserService {
       ),
     );
 
-    console.log(userInfoResponse.data);
     return userInfoResponse.data;
   }
   async findUserFromUuid(uuid: string): Promise<any> {
@@ -109,6 +105,7 @@ export class UserService {
         uuid: uuid,
       },
     });
+    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$', user);
     return user;
   }
 }
