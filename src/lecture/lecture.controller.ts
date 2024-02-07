@@ -34,6 +34,7 @@ export class LectureController {
   }
 
   //강좌별 강의 평가 조회 API
+  @UseGuards(AuthGuard)
   @Get('get')
   getLectureInfo(
     @Query('lecture_id') lecture_id: number,
@@ -48,13 +49,15 @@ export class LectureController {
     return this.lectureService.getAll();
   }
 
-  //강의추가 API
+  //강의추가 API 관리자용
+  @UseGuards(AuthGuard)
   @Post('/add')
   createLecture(@Body() lectureData: CreateLectureDto): Promise<string> {
     return this.lectureService.createLecture(lectureData);
   }
 
-  //강의 삭제 API
+  //강의 삭제 API 관리자용
+  @UseGuards(AuthGuard)
   @Delete('delete:id')
   DeleteLecture(@Param('id') id: number): Promise<any> {
     return this.lectureService.DeleteLecture(id);
