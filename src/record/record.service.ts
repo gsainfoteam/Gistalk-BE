@@ -36,7 +36,10 @@ export class RecordService {
   }
 
   //강의 평가 추가 API
-  async createRecord(createrecorddto: CreateRecordDto): Promise<string> {
+  async createRecord(
+    createrecorddto: CreateRecordDto,
+    user_uuid: string,
+  ): Promise<string> {
     const {
       difficulty,
       strength,
@@ -51,6 +54,7 @@ export class RecordService {
       user_id,
       prof_id,
     } = createrecorddto;
+    console.log(user_uuid);
     //강의 검색
     const found = await this.lectureRepository.findOne({
       relations: {
