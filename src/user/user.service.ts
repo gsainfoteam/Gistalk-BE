@@ -74,7 +74,7 @@ export class UserService {
       console.log(accessTokeResponse.data);
       return await accessTokeResponse.data;
     } catch (e) {
-      return e;
+      throw new UnauthorizedException('Invalid auth code');
     }
   }
 
