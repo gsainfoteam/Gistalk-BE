@@ -59,7 +59,6 @@ export class UserService {
           ),
       );
       console.log(code, type);
-      console.log(accessTokeResponse.data);
       const user_info = await this.userInfo(
         accessTokeResponse.data.access_token,
       );
@@ -73,7 +72,7 @@ export class UserService {
       }
       console.log('user', user);
       console.log(accessTokeResponse.data);
-      return accessTokeResponse.data;
+      return await accessTokeResponse.data;
     } catch (e) {
       return e;
     }
