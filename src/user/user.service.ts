@@ -64,7 +64,7 @@ export class UserService {
         accessTokeResponse.data.access_token,
       );
       console.log('user_info', user_info);
-      const user = this.findUserFromUuid(user_info.user_uuid);
+      const user = await this.findUserFromUuid(user_info.user_uuid);
       if (!user) {
         const user1 = new User();
         user1.uuid = user_info.user_uuid;
