@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { NotFoundError, filter, find } from 'rxjs';
+import { NotFoundError, filter, find, skip } from 'rxjs';
 import { Prof } from 'src/prof/entity/prof.entity';
 import { Record } from 'src/record/entity/record.entity';
 import { DataSource, Repository } from 'typeorm';
@@ -65,11 +65,17 @@ export class LectureService {
           },
         });
       }
+
       try {
         const filter = lecture.records;
 
         const obj_list = [];
         for (var i = 0; i < filter.length; i++) {
+          if (prof_id) {
+            if (filter[i].prof.id != prof_id) {
+              continue;
+            }
+          }
           const parse: any = filter[i];
           const obj = {
             record_id: parse.id,
@@ -91,7 +97,7 @@ export class LectureService {
 
         return obj_list;
       } catch (err) {
-        throw new NotFoundException('There is no lecture.');
+        throw new NotFoundException('There is no any records.');
       }
     }
   }
