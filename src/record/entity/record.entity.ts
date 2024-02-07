@@ -46,13 +46,11 @@ export class Record {
   evaluation: number; // 추천 1 비추천 0 표시 없음 2
 
   @ManyToOne((Type) => Lecture, (lecture) => lecture.lecture_name, {
-    cascade: true,
     eager: true,
   })
   lecture: Lecture;
 
   @ManyToOne((Type) => Prof, (prof) => prof.id, {
-    cascade: true,
     eager: true,
   })
   prof: Prof;
