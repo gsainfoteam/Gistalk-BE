@@ -67,10 +67,10 @@ export class UserService {
       console.log(
         '##############################################################',
       );
-
-      const user = await this.findUserFromUuid(
-        accessTokeResponse.data.user_uuid,
+      const user_uuid = await this.userInfo(
+        accessTokeResponse.data.access_token,
       );
+      const user = await this.findUserFromUuid(user_uuid);
       console.log(user);
       if (!user) {
         const user1 = new User();
