@@ -41,5 +41,3 @@ export class UserController {
     return await this.usersevice.userRecords(user.user_uuid);
   }
 }
-
-// kiYwNVkhJpKs641T1Pc7x0ESoLFmNzVEXMzrxvadvM
