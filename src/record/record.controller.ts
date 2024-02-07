@@ -28,6 +28,7 @@ export class RecordController {
   ) {}
 
   //모든 강의평가 가져오기
+  @UseGuards(AuthGuard)
   @Get('all')
   getAll(): Promise<any> {
     return this.recordservice.getAll();

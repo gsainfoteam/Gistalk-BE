@@ -24,6 +24,7 @@ export class UserController {
     return this.usersevice.LogIn(loginuserDto);
   }
 
+  @UseGuards(AuthGuard)
   @Get('/info')
   UserIonfo(@Req() req) {
     return this.usersevice.userInfo(
@@ -31,6 +32,7 @@ export class UserController {
     );
   }
 
+  @UseGuards(AuthGuard)
   @Get('/record')
   async UserRecord(@Req() req) {
     const user = await this.usersevice.userInfo(
@@ -39,3 +41,5 @@ export class UserController {
     return await this.usersevice.userRecords(user.user_uuid);
   }
 }
+
+// kiYwNVkhJpKs641T1Pc7x0ESoLFmNzVEXMzrxvadvM
