@@ -68,10 +68,15 @@ export class UserService {
       const user_info = await this.userInfo(
         accessTokeResponse.data.access_token,
       );
-      const user = await this.findUserFromUuid(user_info.user_uuid);
-      if (!user.user_uuid) {
+      const user = await this.userRepository.findOne({
+        where: {
+          uuid: user_info.uuid,
+        },
+      });
+      console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$', user);
+      if (!user) {
         const user1 = new User();
-        user1.uuid = user.user_uuid;
+        user1.uuid = user_info.user_uuid;
         await this.userRepository.save(user1);
         console.log('create user');
       }
