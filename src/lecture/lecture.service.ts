@@ -68,7 +68,6 @@ export class LectureService {
 
       try {
         const filter = lecture.records;
-
         const obj_list = [];
         for (var i = 0; i < filter.length; i++) {
           if (prof_id) {
@@ -91,6 +90,7 @@ export class LectureService {
             year: parse.years.year,
             writer_id: parse.user.id,
             prof_id: parse.prof.id,
+            user_id: parse.user.id,
           };
           obj_list.push(obj);
         }
