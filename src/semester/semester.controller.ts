@@ -8,8 +8,8 @@ import { AuthGuard } from 'src/user/auth/auth.guard';
 export class SemesterController {
   constructor(private readonly semesterService: SemesterService) {}
 
-  @Post('push')
-  psuh(@Body() semesterDto: SemesterDto): Promise<any> {
-    return this.semesterService.push(semesterDto);
-  }
+  // @Post('push')
+  // psuh(@Body() semesterDto: SemesterDto): Promise<any> {
+  //   return this.semesterService.push(semesterDto);
+  // }
 }
