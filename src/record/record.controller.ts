@@ -34,6 +34,15 @@ export class RecordController {
     return this.recordservice.getAll();
   }
 
+  // 최신강의평 불러오기
+  @Get('latest/:mount')
+  async getLatestRecords(
+    @Param('mount')
+    mount: number,
+  ): Promise<any> {
+    return await this.recordservice.getLatestRecords(mount);
+  }
+
   //강의평가 추가
   @UseGuards(AuthGuard)
   @Post('add')

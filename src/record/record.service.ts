@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -162,6 +163,20 @@ export class RecordService {
       });
       await this.recordRepository.manager.save(record);
       return 'success';
+    }
+  }
+
+  async getLatestRecords(mount: number): Promise<any> {
+    try {
+      const result = await this.recordRepository.find({
+        order: {
+          id: 'DESC',
+        },
+        take: Number(mount),
+      });
+      return result;
+    } catch (e) {
+      throw new BadRequestException('Must be number.');
     }
   }
 }
