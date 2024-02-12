@@ -33,6 +33,14 @@ export class LectureController {
     return this.lectureService.getLectureId(lecture_code, prof_id);
   }
 
+  //lecture_id로 강의 코드, 강의 명, 해당 교수 명 조회 API
+  @Get('info/id')
+  async getLectureInfoFromLectureId(
+    @Query('lecture_id') lecture_id: number,
+  ): Promise<any> {
+    return await this.lectureService.getLectureInfoFromLectureId(lecture_id);
+  }
+
   //강좌별 강의 평가 조회 API
   @Get('get')
   getLectureInfo(

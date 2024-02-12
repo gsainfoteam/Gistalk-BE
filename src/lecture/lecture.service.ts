@@ -129,6 +129,16 @@ export class LectureService {
     return await this.json_filter(found);
   }
 
+  async getLectureInfoFromLectureId(lecture_id: number): Promise<any> {
+    const result = await this.lectureRepository.find({
+      relations: {
+        prof: true,
+      },
+      where: { id: lecture_id },
+    });
+    return result;
+  }
+
   /**강의 추가 API*/
   //기존에 없는 강의를 추가할 떄, 교수자를 추가할 때, must be set the professror data before use this API.
   async createLecture(createLectureDto: CreateLectureDto): Promise<any> {
