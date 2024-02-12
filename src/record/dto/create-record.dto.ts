@@ -57,4 +57,6 @@ export class CreateRecordDto {
   @IsNumberString()
   @Length(4, 4)
   readonly year: string;
+
+  readonly recommend?: number;
 }
