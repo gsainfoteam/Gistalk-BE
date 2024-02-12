@@ -24,4 +24,7 @@ export class Prof {
   @ManyToMany(() => Lecture, (lectures) => lectures.prof)
   @JoinTable()
   lectures: Lecture[];
+
+  @OneToMany((Type) => Scoring, (score) => score.prof)
+  scorings: Scoring[];
 }

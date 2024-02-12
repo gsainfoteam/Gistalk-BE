@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Lecture } from 'src/lecture/entity/lecture.entity';
 import { Repository } from 'typeorm';
 import { Scoring } from './entity/scoring.entity';
+import { Prof } from 'src/prof/entity/prof.entity';
+import { number } from 'joi';
 
 @Injectable()
 export class ScoringService {
@@ -11,10 +13,12 @@ export class ScoringService {
     private scoringRepository: Repository<Scoring>,
     @InjectRepository(Lecture)
     private lectureRepository: Repository<Lecture>,
+    @InjectRepository(Prof)
+    private profRepository: Repository<Prof>,
   ) {}
 
   //강의 id에 따라서 저장된 점수 가져오는 API
-  async getScoring(lecture_id: number): Promise<any> {
+  async getScoring(lecture_id: number, prof_id?: number): Promise<any> {
     const lectureid = Number(lecture_id);
     this.getLectureInfo(lecture_id);
     const lecture = await this.getLectureInfo(lectureid);
@@ -24,19 +28,44 @@ export class ScoringService {
     if (!people) {
       throw new NotFoundException(`강의평이 없습니다.`);
     } else {
-      const score = await this.scoringRepository.findOne({
-        where: {
-          lecture_id: lecture_id,
-        },
-      });
+      try {
+        const score = await this.scoringRepository.findOne({
+          where: {
+            lecture: {
+              id: lecture_id,
+            },
+            prof: {
+              id: prof_id,
+            },
+          },
+        });
+        let modifiedScore = JSON.parse(JSON.stringify(score));
 
-      return score;
+        modifiedScore.prof_id = modifiedScore.prof.id;
+        delete modifiedScore.prof;
+        return modifiedScore;
+      } catch (e) {
+        throw new NotFoundException(
+          "Can't find lecture-prof values you given.",
+        );
+      }
     }
   }
 
   //강의 여부 확인 함수
-  async getLectureInfo(lecture_id: number): Promise<any> {
-    const found = await this.lectureRepository.findOneBy({ id: lecture_id });
+  async getLectureInfo(lecture_id: number, prof_id?: number): Promise<any> {
+    const found = await this.lectureRepository.findOne({
+      relations: {
+        prof: true,
+      },
+      where: {
+        id: lecture_id,
+        prof: {
+          id: prof_id,
+        },
+      },
+    });
+    //console.log("getLectureinfo's found :  ", found);
 
     if (!found) {
       throw new NotFoundException(
@@ -46,53 +75,76 @@ export class ScoringService {
       const lecture = await this.lectureRepository.findOne({
         relations: {
           records: true,
+          prof: true,
         },
         where: {
           id: lecture_id,
+          prof: {
+            id: prof_id,
+          },
+          records: {
+            prof: {
+              id: prof_id,
+            },
+          },
         },
       });
-
+      //console.log('getLectureInfo result: ', lecture);
       return lecture;
     }
   }
 
   // 강의 평점 계산 & 6개 평가 지표 API
-  async scoring(main_lecture_id: number): Promise<any> {
-    const lecture = await this.getLectureInfo(main_lecture_id * 1); //1곱하지말고 parseInt pipe만드는게 좋을듯
+  async scoring(main_lecture_id: number, prof_id?: number): Promise<any> {
+    const lecture = await this.getLectureInfo(Number(main_lecture_id), prof_id); //1곱하지말고 parseInt pipe만드는게 좋을듯
     const people = lecture.records.length;
     const found = await this.scoringRepository.findOne({
       where: {
-        lecture_id: main_lecture_id * 1,
+        lecture_id: Number(main_lecture_id),
+        lecture: { id: Number(main_lecture_id) },
+        prof: { id: prof_id },
       },
     });
     if (found) {
       return 'aleady calculated lecture.';
     }
     if (people) {
-      await this.scoringFuntion('post', lecture, people, main_lecture_id);
+      await this.scoringFuntion(
+        'post',
+        lecture,
+        people,
+        main_lecture_id,
+        prof_id,
+      );
     }
 
     return 'success';
   }
 
-  async updateScoring(lecture_id: number): Promise<any> {
+  async updateScoring(lecture_id: number, prof_id?: number): Promise<any> {
     const lectureId = Number(lecture_id);
-    const fuond = await this.getLectureInfo(lectureId);
+    //const fuond = await this.getLectureInfo(lectureId, prof_id);
     //console.log(fuond)
 
     const confirm = await this.scoringRepository.findOne({
+      relations: {
+        prof: true,
+      },
       where: {
         lecture: {
           id: lectureId,
         },
+        prof: {
+          id: prof_id,
+        },
       },
     });
     if (confirm) {
-      const lecture = await this.getLectureInfo(lectureId);
-      console.log(lecture);
+      const lecture = await this.getLectureInfo(lectureId, prof_id);
+      //console.log('\n confirm in lecture \n', lecture);
 
       const people = lecture.records.length;
-      this.scoringFuntion('patch', lecture, people, lectureId);
+      this.scoringFuntion('patch', lecture, people, lectureId, prof_id);
     }
   }
 
@@ -102,7 +154,9 @@ export class ScoringService {
     lecture: any,
     people: number,
     main_lecture_id: number,
+    prof_id?: number,
   ) {
+    // let prof_id = prof_i1d;
     let i: number;
     let diff_sum = 0;
     let stren_sum = 0;
@@ -144,6 +198,10 @@ export class ScoringService {
     // total_score =
     //   (diff_sum + stren_sum + help_sum + inter_sum + lots_sum + sati_sum) / 6;
     const found = await this.lectureRepository.findOne({
+      relations: {
+        records: true,
+        prof: true,
+      },
       select: {
         id: true,
         lecture_code: true,
@@ -151,6 +209,11 @@ export class ScoringService {
       },
       where: {
         id: main_lecture_id,
+        records: {
+          prof: {
+            id: prof_id,
+          },
+        },
       },
     });
     //DB 저장
@@ -172,9 +235,25 @@ export class ScoringService {
       scoring.lecture = await this.lectureRepository.findOne({
         relations: {
           records: true,
+          prof: true,
         },
         where: {
           id: main_lecture_id * 1,
+          prof: {
+            id: prof_id,
+          },
+        },
+      });
+      scoring.prof = await this.profRepository.findOne({
+        relations: {
+          records: true,
+          lectures: true,
+        },
+        where: {
+          id: prof_id,
+          lectures: {
+            id: Number(main_lecture_id),
+          },
         },
       });
       await this.scoringRepository.manager.save(scoring);
@@ -185,9 +264,11 @@ export class ScoringService {
           lecture: {
             id: main_lecture_id,
           },
+          prof: {
+            id: prof_id,
+          },
         },
       });
-
       scoring.lecture_id = main_lecture_id * 1;
       scoring.diff_aver = diff_sum;
       scoring.stren_aver = stren_sum;
@@ -198,6 +279,30 @@ export class ScoringService {
       scoring.people = people;
       scoring.good = good;
       scoring.bad = bad;
+      scoring.lecture = await this.lectureRepository.findOne({
+        relations: {
+          records: true,
+          prof: true,
+        },
+        where: {
+          id: main_lecture_id * 1,
+          prof: {
+            id: prof_id,
+          },
+        },
+      });
+      scoring.prof = await this.profRepository.findOne({
+        relations: {
+          records: true,
+          lectures: true,
+        },
+        where: {
+          id: prof_id,
+          lectures: {
+            id: Number(main_lecture_id),
+          },
+        },
+      });
       // scoring.total_score = total_score.toPrecision(2);
       await this.scoringRepository.save(scoring);
       return scoring;

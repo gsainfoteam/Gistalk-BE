@@ -26,7 +26,7 @@ export class Lecture {
   @OneToMany((Type) => Record, (record) => record.lecture)
   records: Record[];
 
-  @OneToOne(() => Scoring, (socring) => socring.lecture)
+  @OneToMany(() => Scoring, (socring) => socring.lecture)
   scoring: Scoring;
 
   @ManyToMany(() => Prof, (prof) => prof.lectures)

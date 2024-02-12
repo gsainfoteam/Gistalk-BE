@@ -6,10 +6,10 @@ import { scoringrepo } from './repository/scoring.repository';
 import { ScoringController } from './scoring.controller';
 import { ScoringService } from './scoring.service';
 import { UserModule } from 'src/user/user.module';
+import { Prof } from 'src/prof/entity/prof.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Scoring, Lecture]),
-  UserModule],
+  imports: [TypeOrmModule.forFeature([Scoring, Lecture, Prof]), UserModule],
   controllers: [ScoringController],
   providers: [ScoringService],
 })

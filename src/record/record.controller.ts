@@ -56,7 +56,10 @@ export class RecordController {
     );
     try {
       await this.recordservice.createRecord(createrecorddto, uuid.user_uuid);
-      await this.scoringService.scoring(createrecorddto.lecture_id); // 강의평 평점 계산
+      await this.scoringService.scoring(
+        createrecorddto.lecture_id,
+        createrecorddto.prof_id,
+      ); // 강의평 평점 계산
       return 'success';
     } catch (error) {
       return error.response;
