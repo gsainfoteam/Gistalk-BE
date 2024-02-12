@@ -176,7 +176,6 @@ export class RecordService {
         },
         take: Number(mount),
       });
-      console.log(result);
       const modifiedResults = result.map((record) => ({
         id: record.id,
         difficulty: record.difficulty,
