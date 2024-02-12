@@ -53,6 +53,7 @@ export class RecordService {
       semester_id,
       year,
       prof_id,
+      recommend,
     } = createrecorddto;
     //강의 검색
     const found = await this.lectureRepository.findOne({
@@ -66,10 +67,9 @@ export class RecordService {
         },
       },
     });
-    console.log(found);
     if (!found) {
       throw new NotFoundException(
-        `해당되는 id : ${lecture_id} 강의가 없습니다.`,
+        `해당되는 id : ${lecture_id} 강의가 없거나 해당 교수가 담당하는 강의가 없습니다.`,
       );
     }
 
@@ -113,6 +113,7 @@ export class RecordService {
       record.lots = lots;
       record.satisfy = satisfy;
       record.review = review;
+      record.recommend = recommend;
       record.user = await this.userRepository.findOne({
         relations: {
           records: true,
@@ -169,12 +170,27 @@ export class RecordService {
   async getLatestRecords(mount: number): Promise<any> {
     try {
       const result = await this.recordRepository.find({
+        relations: { semesters: true, years: true },
         order: {
           id: 'DESC',
         },
         take: Number(mount),
       });
-      return result;
+
+      const modifiedResults = result.map((record) => ({
+        id: record.id,
+        difficulty: record.difficulty,
+        strength: record.strength,
+        helpful: record.helpful,
+        interest: record.interest,
+        lots: record.lots,
+        satisfy: record.satisfy,
+        review: record.review,
+        recommend: record.recommend,
+        semesterId: record.semesters.id,
+        year: record.years.year,
+      }));
+      return modifiedResults;
     } catch (e) {
       throw new BadRequestException('Must be number.');
     }

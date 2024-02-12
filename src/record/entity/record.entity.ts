@@ -43,7 +43,7 @@ export class Record {
   review: string;
 
   @Column({ default: 2 })
-  evaluation: number; // 추천 1 비추천 0 표시 없음 2
+  recommend: number; // 추천 1 비추천 0 표시 없음 2
 
   @ManyToOne((Type) => Lecture, (lecture) => lecture.lecture_name, {
     eager: true,

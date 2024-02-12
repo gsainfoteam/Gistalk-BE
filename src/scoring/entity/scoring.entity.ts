@@ -36,6 +36,12 @@ export class Scoring {
   @Column()
   sati_aver: number;
 
+  @Column()
+  good: number;
+
+  @Column()
+  bad: number;
+
   // @Column()
   // total_score: string;
 

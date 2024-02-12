@@ -15,8 +15,9 @@ export class ScoringService {
 
   //강의 id에 따라서 저장된 점수 가져오는 API
   async getScoring(lecture_id: number): Promise<any> {
+    const lectureid = Number(lecture_id);
     this.getLectureInfo(lecture_id);
-    const lecture = await this.getLectureInfo(lecture_id * 1);
+    const lecture = await this.getLectureInfo(lectureid);
     const people = lecture.records.length;
     //console.log("총 평가 인원 " + people);
 
@@ -75,20 +76,23 @@ export class ScoringService {
   }
 
   async updateScoring(lecture_id: number): Promise<any> {
-    const fuond = await this.getLectureInfo(lecture_id);
+    const lectureId = Number(lecture_id);
+    const fuond = await this.getLectureInfo(lectureId);
     //console.log(fuond)
 
     const confirm = await this.scoringRepository.findOne({
       where: {
         lecture: {
-          id: lecture_id,
+          id: lectureId,
         },
       },
     });
     if (confirm) {
-      const lecture = await this.getLectureInfo(lecture_id * 1);
+      const lecture = await this.getLectureInfo(lectureId);
+      console.log(lecture);
+
       const people = lecture.records.length;
-      this.scoringFuntion('patch', lecture, people, lecture_id);
+      this.scoringFuntion('patch', lecture, people, lectureId);
     }
   }
 
@@ -106,6 +110,8 @@ export class ScoringService {
     let inter_sum = 0;
     let lots_sum = 0;
     let sati_sum = 0;
+    let good = 0;
+    let bad = 0;
     let total_score = 0;
     for (i = 0; i < people; i++) {
       const diff = lecture.records[i].difficulty;
@@ -114,6 +120,11 @@ export class ScoringService {
       const inter = lecture.records[i].interest;
       const lots = lecture.records[i].lots;
       const sati = lecture.records[i].satisfy;
+      if (lecture.records[i].recommend == 1) {
+        good = good + 1;
+      } else if (lecture.records[i].recommend == 0) {
+        bad = bad + 1;
+      }
 
       diff_sum = diff_sum + diff;
       stren_sum = stren_sum + stren;
@@ -155,6 +166,8 @@ export class ScoringService {
       scoring.lots_aver = lots_sum;
       scoring.sati_aver = sati_sum;
       scoring.people = people;
+      scoring.good = good;
+      scoring.bad = bad;
       // scoring.total_score = total_score.toPrecision(2);
       scoring.lecture = await this.lectureRepository.findOne({
         relations: {
@@ -183,6 +196,8 @@ export class ScoringService {
       scoring.lots_aver = lots_sum;
       scoring.sati_aver = sati_sum;
       scoring.people = people;
+      scoring.good = good;
+      scoring.bad = bad;
       // scoring.total_score = total_score.toPrecision(2);
       await this.scoringRepository.save(scoring);
       return scoring;
