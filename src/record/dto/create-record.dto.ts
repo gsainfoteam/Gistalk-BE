@@ -57,8 +57,4 @@ export class CreateRecordDto {
   @IsNumberString()
   @Length(4, 4)
   readonly year: string;
-
-  @IsInt()
-  @IsPositive()
-  readonly recommend: number;
 }
