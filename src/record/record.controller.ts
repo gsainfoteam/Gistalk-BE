@@ -50,7 +50,6 @@ export class RecordController {
     @Req() req,
     @Body(new ValidationPipe())
     createrecorddto: CreateRecordDto,
-    recommend?: number,
   ): Promise<any> {
     const uuid = await this.userSerice.userInfo(
       req.headers.authorization.split(' ').slice(-1)[0],
