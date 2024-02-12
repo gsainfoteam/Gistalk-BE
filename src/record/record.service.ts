@@ -40,6 +40,7 @@ export class RecordService {
   async createRecord(
     createrecorddto: CreateRecordDto,
     user_uuid: string,
+    recommend?: number,
   ): Promise<string> {
     const {
       difficulty,
@@ -53,7 +54,6 @@ export class RecordService {
       semester_id,
       year,
       prof_id,
-      recommend,
     } = createrecorddto;
     //강의 검색
     const found = await this.lectureRepository.findOne({
