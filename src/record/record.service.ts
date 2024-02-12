@@ -176,7 +176,7 @@ export class RecordService {
         },
         take: Number(mount),
       });
-
+      console.log(result);
       const modifiedResults = result.map((record) => ({
         id: record.id,
         difficulty: record.difficulty,
@@ -189,6 +189,11 @@ export class RecordService {
         recommend: record.recommend,
         semesterId: record.semesters.id,
         year: record.years.year,
+        lecture_id: record.lecture.id,
+        lecture_name: record.lecture.lecture_name,
+        lecture_code: record.lecture.lecture_code,
+        prof_id: record.prof.id,
+        prof_name: record.prof.prof_name,
       }));
       return modifiedResults;
     } catch (e) {

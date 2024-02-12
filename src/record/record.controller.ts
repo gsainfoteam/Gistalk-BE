@@ -65,4 +65,26 @@ export class RecordController {
       return error.response;
     }
   }
+
+  @UseGuards(AuthGuard)
+  @Patch('add')
+  async patcheRecord(
+    @Req() req,
+    @Body(new ValidationPipe())
+    createrecorddto: CreateRecordDto,
+  ): Promise<any> {
+    const uuid = await this.userSerice.userInfo(
+      req.headers.authorization.split(' ').slice(-1)[0],
+    );
+    try {
+      //await this.recordservice.createRecord(createrecorddto, uuid.user_uuid);
+      await this.scoringService.scoring(
+        createrecorddto.lecture_id,
+        createrecorddto.prof_id,
+      ); // 강의평 평점 계산
+      return 'success';
+    } catch (error) {
+      return error.response;
+    }
+  }
 }
