@@ -13,6 +13,7 @@ import { Semester } from 'src/semester/entity/semester.entity';
 import { Year } from 'src/year/entity/year.entity';
 import { User } from 'src/user/entity/user.entity';
 import { Prof } from 'src/prof/entity/prof.entity';
+import { UpdateRecordDto } from './dto/update-record.dto';
 
 @Injectable()
 export class RecordService {
@@ -197,6 +198,41 @@ export class RecordService {
       return modifiedResults;
     } catch (e) {
       throw new BadRequestException('Must be number.');
+    }
+  }
+
+  async updateRecord(
+    record_id: number,
+    updaterecorddto: UpdateRecordDto,
+  ): Promise<any> {
+    const result = await this.recordRepository.findOne({
+      where: {
+        id: record_id,
+      },
+    });
+    if (result) {
+      try {
+        let modifiedResults = JSON.parse(JSON.stringify(result));
+        modifiedResults.difficulty = updaterecorddto.difficulty;
+        modifiedResults.strength = updaterecorddto.strength;
+        modifiedResults.helpful = updaterecorddto.helpful;
+        modifiedResults.interest = updaterecorddto.interest;
+        modifiedResults.lots = updaterecorddto.lots;
+        modifiedResults.satisfy = updaterecorddto.satisfy;
+        modifiedResults.review = updaterecorddto.review;
+        modifiedResults.recommend = updaterecorddto.recommend;
+        delete modifiedResults.lecture;
+        delete modifiedResults.prof;
+        await this.recordRepository.update(record_id, modifiedResults);
+        const found = await this.recordRepository.findOne({
+          where: {
+            id: record_id,
+          },
+        });
+        return found;
+      } catch (e) {
+        return e;
+      }
     }
   }
 }

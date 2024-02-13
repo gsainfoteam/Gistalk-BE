@@ -17,6 +17,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { ScoringService } from 'src/scoring/scoring.service';
 import { AuthGuard } from 'src/user/auth/auth.guard';
 import { UserService } from 'src/user/user.service';
+import { UpdateRecordDto } from './dto/update-record.dto';
 
 @ApiTags('RECORD')
 @Controller('records')
@@ -60,6 +61,10 @@ export class RecordController {
         createrecorddto.lecture_id,
         createrecorddto.prof_id,
       ); // 강의평 평점 계산
+      await this.scoringService.updateScoring(
+        createrecorddto.lecture_id,
+        createrecorddto.prof_id,
+      );
       return 'success';
     } catch (error) {
       return error.response;
@@ -67,21 +72,27 @@ export class RecordController {
   }
 
   @UseGuards(AuthGuard)
-  @Patch('add')
+  @Patch('update/:id')
   async patcheRecord(
     @Req() req,
+    @Param('id') id: number,
     @Body(new ValidationPipe())
-    createrecorddto: CreateRecordDto,
+    updaterecorddto: UpdateRecordDto,
   ): Promise<any> {
+    console.log('in');
     const uuid = await this.userSerice.userInfo(
       req.headers.authorization.split(' ').slice(-1)[0],
     );
     try {
-      //await this.recordservice.createRecord(createrecorddto, uuid.user_uuid);
+      await this.recordservice.updateRecord(id, updaterecorddto);
       await this.scoringService.scoring(
-        createrecorddto.lecture_id,
-        createrecorddto.prof_id,
+        updaterecorddto.lecture_id,
+        updaterecorddto.prof_id,
       ); // 강의평 평점 계산
+      await this.scoringService.updateScoring(
+        updaterecorddto.lecture_id,
+        updaterecorddto.prof_id,
+      );
       return 'success';
     } catch (error) {
       return error.response;

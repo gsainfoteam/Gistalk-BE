@@ -16,6 +16,6 @@ export class ScoringController {
   ): Promise<any> {
     await this.scoringService.scoring(lecture_id, prof_id);
     await this.scoringService.updateScoring(lecture_id, prof_id);
-    return this.scoringService.getScoring(lecture_id, prof_id);
+    return await this.scoringService.getScoring(lecture_id, prof_id);
   }
 }
