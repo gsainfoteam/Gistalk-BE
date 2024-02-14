@@ -3,7 +3,7 @@ name: Update Kubernetes Cluster (prod)
 on:
   push:
     branches:
-      - prod
+      - production
 
 jobs:
   build:
