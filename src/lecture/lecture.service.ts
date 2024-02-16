@@ -24,7 +24,6 @@ export class LectureService {
   /**강좌별 강의 평가 조회  API*/
   async getLectureInfo(lecture_id: number, prof_id?: number): Promise<any> {
     const found = await this.lectureRepository.findOneBy({ id: lecture_id });
-
     if (!found) {
       throw new NotFoundException(
         `ID에 할당된 강의가 없습니다 ID : ${lecture_id}`,
@@ -85,7 +84,7 @@ export class LectureService {
             lots: parse.lots,
             satisfy: parse.satisfy,
             review: parse.review,
-            evaluation: parse.evaluation,
+            recommend: parse.recommend,
             semester: parse.semesters.id,
             year: parse.years.year,
             writer_id: parse.user.id,

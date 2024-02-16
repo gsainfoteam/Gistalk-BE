@@ -108,12 +108,41 @@ export class UserService {
   async userRecords(uuid: string): Promise<any> {
     const result = await this.userRepository.findOne({
       relations: {
-        records: true,
+        records: {
+          prof: true,
+          lecture: true,
+          semesters: true,
+          years: true,
+        },
       },
       where: {
         uuid: uuid,
       },
     });
-    return result;
+    const obj_list = [];
+    for (var i = 0; i < result.records.length; i++) {
+      const parse: any = result.records[i];
+      const obj = {
+        record_id: parse.id,
+        difficulty: parse.difficulty,
+        strength: parse.strength,
+        helpful: parse.helpful,
+        interest: parse.interest,
+        lots: parse.lots,
+        satisfy: parse.satisfy,
+        review: parse.review,
+        recommend: parse.recommend,
+        semester: parse.semesters.id,
+        year: parse.years.year,
+        prof_id: parse.prof.id,
+        prof_name: parse.prof.prof_name,
+        lecture_id: parse.lecture.id,
+        lecture_code: parse.lecture.lecture_code,
+        lecture_name: parse.lecture.lecture_name,
+      };
+      obj_list.push(obj);
+    }
+
+    return obj_list;
   }
 }
