@@ -20,4 +20,5 @@ export class User {
 
   @OneToMany((Type) => Record, (record) => record.user)
   records: Record[];
+  length: number;
 }
