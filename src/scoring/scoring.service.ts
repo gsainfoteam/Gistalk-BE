@@ -53,8 +53,8 @@ export class ScoringService {
     }
   }
 
-  async getTotalScoring(gettscoringdto: GetScoringDto): Promise<any> {
-    const lectureid = gettscoringdto.lecture_id;
+  async getTotalScoring(lecture_id: number): Promise<any> {
+    const lectureid = lecture_id;
     this.getLectureInfo(lectureid);
     const lecture = await this.getLectureInfo(lectureid);
     const people = lecture.records.length;

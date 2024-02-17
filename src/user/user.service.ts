@@ -36,10 +36,7 @@ export class UserService {
             {
               code: code,
               grant_type: 'authorization_code',
-              redirect_uri:
-                type == 'dev'
-                  ? this.configService.get<string>('LOCAL_REDIRECT_URL')
-                  : this.configService.get<string>('STG_REDIRECT_URL'),
+              redirect_uri: this.configService.get<string>('STG_REDIRECT_URL'),
             },
             {
               headers: { 'content-type': 'application/x-www-form-urlencoded' },
@@ -58,20 +55,15 @@ export class UserService {
             }),
           ),
       );
-      console.log(code, type);
       const user_info = await this.userInfo(
         accessTokeResponse.data.access_token,
       );
-      console.log('user_info', user_info);
       const user = await this.findUserFromUuid(user_info.user_uuid);
       if (!user) {
         const user1 = new User();
         user1.uuid = user_info.user_uuid;
         await this.userRepository.save(user1);
-        console.log('create user');
       }
-      console.log('user', user);
-      console.log(accessTokeResponse.data);
       return await accessTokeResponse.data;
     } catch (e) {
       console.log(e);
