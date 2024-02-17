@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Scoring } from './entity/scoring.entity';
 import { Prof } from 'src/prof/entity/prof.entity';
 import { number } from 'joi';
+import { GetScoringDto } from './dto/get-scoring.dto';
 
 @Injectable()
 export class ScoringService {
@@ -44,6 +45,66 @@ export class ScoringService {
         modifiedScore.prof_id = modifiedScore.prof.id;
         delete modifiedScore.prof;
         return modifiedScore;
+      } catch (e) {
+        throw new NotFoundException(
+          "Can't find lecture-prof values you given.",
+        );
+      }
+    }
+  }
+
+  async getTotalScoring(gettscoringdto: GetScoringDto): Promise<any> {
+    const lectureid = gettscoringdto.lecture_id;
+    this.getLectureInfo(lectureid);
+    const lecture = await this.getLectureInfo(lectureid);
+    const people = lecture.records.length;
+    //console.log("총 평가 인원 " + people);
+
+    if (!people) {
+      throw new NotFoundException(`강의평이 없습니다.`);
+    } else {
+      try {
+        const score = await this.scoringRepository.find({
+          where: {
+            lecture_id: lectureid,
+          },
+        });
+        let modifiedScore = JSON.parse(JSON.stringify(score));
+        let people = 0;
+        let diff_aver = 0;
+        let stren_aver = 0;
+        let help_aver = 0;
+        let inter_aver = 0;
+        let lots_aver = 0;
+        let sati_aver = 0;
+        let good = 0;
+        let bad = 0;
+        for (var i = 0; i < modifiedScore.length; i++) {
+          const parse: any = modifiedScore[i];
+          people += parse.people;
+          diff_aver += parse.diff_aver;
+          stren_aver += parse.stren_aver;
+          help_aver += parse.help_aver;
+          inter_aver += parse.inter_aver;
+          lots_aver += parse.lots_aver;
+          sati_aver += parse.sati_aver;
+          good += parse.good;
+          bad += parse.bad;
+        }
+        const length = modifiedScore.length;
+        const obj = {
+          lecture_id: modifiedScore[0].lecture_id,
+          people: people,
+          diff_aver: diff_aver / length,
+          stren_aver: stren_aver / length,
+          help_aver: help_aver / length,
+          inter_aver: inter_aver / length,
+          lots_aver: lots_aver / length,
+          sati_aver: sati_aver / length,
+          good: good,
+          bad: bad,
+        };
+        return obj;
       } catch (e) {
         throw new NotFoundException(
           "Can't find lecture-prof values you given.",
