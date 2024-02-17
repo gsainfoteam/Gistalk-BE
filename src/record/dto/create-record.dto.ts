@@ -38,7 +38,7 @@ export class CreateRecordDto {
   @Max(5)
   readonly satisfy: number;
 
-  @Length(15, 255)
+  @Length(15, 1000)
   readonly review: string;
 
   @IsInt()
