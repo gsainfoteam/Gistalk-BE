@@ -30,7 +30,7 @@ export class ScoringController {
   }
 
   @Get('get/total')
-  async getTotalScoring(@Query('lecture_id') lecture_id: number): Promise<any> {
+  async getTotalScoring(@Query('') lecture_id: number): Promise<any> {
     return await this.scoringService.getTotalScoring(lecture_id);
   }
 }
