@@ -1,7 +1,16 @@
-import { Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ScoringService } from './scoring.service';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/user/auth/auth.guard';
+import { GetScoringDto } from './dto/get-scoring.dto';
 
 @ApiTags('SCROEING')
 @Controller('scoring')
@@ -17,5 +26,10 @@ export class ScoringController {
     await this.scoringService.scoring(lecture_id, prof_id);
     await this.scoringService.updateScoring(lecture_id, prof_id);
     return await this.scoringService.getScoring(lecture_id, prof_id);
+  }
+
+  @Get('get/total')
+  async getTotalScoring(@Body() getscoringdto: GetScoringDto): Promise<any> {
+    return await this.scoringService.getTotalScoring(getscoringdto);
   }
 }
