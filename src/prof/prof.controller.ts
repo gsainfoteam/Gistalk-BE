@@ -42,6 +42,7 @@ export class ProfController {
   @UseGuards(AuthGuard)
   @Get('search/:name')
   searchProf(@Param('name') name:string): Promise<string> {
+    console.log(name);
     return this.profService.searchProf(name);
   }
 
