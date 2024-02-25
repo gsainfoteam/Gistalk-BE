@@ -1,5 +1,6 @@
 import {
   Body,
+  Query,
   Controller,
   Delete,
   Get,
@@ -42,8 +43,8 @@ export class ProfController {
   //** 교수 ID 검색 API 관리자용 */
   @UseGuards(AuthGuard)
   @Get('search')
-  searchProf(@Body() profData: SearchProfDto): Promise<string> {
-    return this.profService.searchProf(profData.name);
+  searchProf(@Query() query): Promise<string> {
+    return this.profService.searchProf(query.name);
   }
 
 }
