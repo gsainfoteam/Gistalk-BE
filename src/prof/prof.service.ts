@@ -79,9 +79,9 @@ export class ProfService {
 
   //교수 ID 검색 API
   async searchProf(profName: string): Promise<string> {
-    const found = await this.profRepository.findOne(
-      { prof_name: profName },
-    );
+    const found = await this.profRepository.findOne({
+      where: { prof_name: profName },
+    });
 
     if (!found) {
       return '';
