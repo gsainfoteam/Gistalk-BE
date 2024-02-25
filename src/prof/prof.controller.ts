@@ -39,7 +39,6 @@ export class ProfController {
   }
 
   //** 교수 ID 검색 API 관리자용 */
-  @UseGuards(AuthGuard)
   @Get('search/:name')
   searchProf(@Param('name') name:string): Promise<string> {
     console.log(name);
