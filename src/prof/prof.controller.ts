@@ -13,7 +13,6 @@ import { CreateProfDto } from './dto/create-prof.dto';
 import { ProfService } from './prof.service';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/user/auth/auth.guard';
-import { SearchProfDto } from './dto/search-prof.dto';
 
 @ApiTags('PROF')
 @Controller('profs')
