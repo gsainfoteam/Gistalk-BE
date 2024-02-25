@@ -12,6 +12,7 @@ import { CreateProfDto } from './dto/create-prof.dto';
 import { ProfService } from './prof.service';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/user/auth/auth.guard';
+import { SearchProfDto } from './dto/search-prof.dto';
 
 @ApiTags('PROF')
 @Controller('profs')
@@ -37,4 +38,12 @@ export class ProfController {
   DeleteProf(@Param('id') id: number): Promise<any> {
     return this.profService.DeleteProf(id);
   }
+
+  //** 교수 ID 검색 API 관리자용 */
+  @UseGuards(AuthGuard)
+  @Get('search')
+  searchProf(@Body() profData: SearchProfDto): Promise<string> {
+    return this.profService.searchProf(profData.id);
+  }
+
 }
