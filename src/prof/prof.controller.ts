@@ -43,7 +43,7 @@ export class ProfController {
   @UseGuards(AuthGuard)
   @Get('search')
   searchProf(@Body() profData: SearchProfDto): Promise<string> {
-    return this.profService.searchProf(profData.id);
+    return this.profService.searchProf(profData.name);
   }
 
 }
