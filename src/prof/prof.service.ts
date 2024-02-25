@@ -79,7 +79,7 @@ export class ProfService {
 
   //교수 ID 검색 API
   async searchProf(profName: string): Promise<string> {
-    const found = await this.profRepository.findOneBy({ id: profName });
+    const found = await this.profRepository.findOneBy({ profName: profName });
 
     if (!found) {
       return '';
