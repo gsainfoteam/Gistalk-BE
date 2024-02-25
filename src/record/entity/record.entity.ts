@@ -39,7 +39,7 @@ export class Record {
   @Column()
   satisfy: number; //만족도
   //리뷰
-  @Column({ type: 'varchar', length: 1000 })
+  @Column({ type: 'varchar', length: 3000 })
   review: string;
 
   @Column({ default: 2 })

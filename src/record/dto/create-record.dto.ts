@@ -38,7 +38,7 @@ export class CreateRecordDto {
   @Max(5)
   readonly satisfy: number;
 
-  @Length(15, 1000)
+  @Length(15, 3000)
   readonly review: string;
 
   @IsInt()
@@ -51,7 +51,7 @@ export class CreateRecordDto {
 
   @IsInt()
   @IsPositive()
-  @Max(4)
+  @Max(5)
   readonly semester_id: number;
 
   @IsNumberString()
