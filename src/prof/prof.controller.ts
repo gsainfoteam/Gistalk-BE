@@ -37,4 +37,13 @@ export class ProfController {
   DeleteProf(@Param('id') id: number): Promise<any> {
     return this.profService.DeleteProf(id);
   }
+
+  //** 교수 ID 검색 API 관리자용 */
+  @UseGuards(AuthGuard)
+  @Get('search/:name')
+  searchProf(@Param('name') name:string): Promise<string> {
+    console.log(name);
+    return this.profService.searchProf(name);
+  }
+
 }

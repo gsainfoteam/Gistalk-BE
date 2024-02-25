@@ -36,7 +36,10 @@ export class UserService {
             {
               code: code,
               grant_type: 'authorization_code',
-              redirect_uri: this.configService.get<string>('STG_REDIRECT_URL'),
+              redirect_uri:
+                type == 'dev'
+                  ? this.configService.get<string>('LOCAL_REDIRECT_URL')
+                  : this.configService.get<string>('STG_REDIRECT_URL'),
             },
             {
               headers: { 'content-type': 'application/x-www-form-urlencoded' },

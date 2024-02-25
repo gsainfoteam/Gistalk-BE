@@ -76,4 +76,17 @@ export class ProfService {
   async DeleteProf(id: number): Promise<void> {
     const result = await this.profRepository.delete(id);
   }
+
+  //교수 ID 검색 API
+  async searchProf(profName: string): Promise<string> {
+    const found = await this.profRepository.findOne({
+      where: { prof_name: profName },
+    });
+
+    if (!found) {
+      return '';
+    } else {
+      return found.prof_name;
+    }
+  }
 }
