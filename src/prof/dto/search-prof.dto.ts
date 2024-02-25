@@ -1,3 +1,3 @@
 export class SearchProfDto {
-  readonly id: number;
+  readonly name: string;
 }
