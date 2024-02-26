@@ -163,7 +163,6 @@ export class ScoringService {
       Number(main_lecture_id),
       Number(prof_id),
     ); //1곱하지말고 parseInt pipe만드는게 좋을듯
-    console.log(lecture);
     const people = lecture.records.length;
     const found = await this.scoringRepository.findOne({
       where: {
