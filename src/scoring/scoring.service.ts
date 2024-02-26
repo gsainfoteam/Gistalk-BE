@@ -126,7 +126,6 @@ export class ScoringService {
         },
       },
     });
-    //console.log("getLectureinfo's found :  ", found);
 
     if (!found) {
       throw new NotFoundException(
@@ -150,14 +149,21 @@ export class ScoringService {
           },
         },
       });
-      //console.log('getLectureInfo result: ', lecture);
-      return lecture;
+      if (lecture === null) {
+        throw new NotFoundException('아직 작성된 강의평이 없습니다.');
+      } else {
+        return lecture;
+      }
     }
   }
 
   // 강의 평점 계산 & 6개 평가 지표 API
   async scoring(main_lecture_id: number, prof_id?: number): Promise<any> {
-    const lecture = await this.getLectureInfo(Number(main_lecture_id), prof_id); //1곱하지말고 parseInt pipe만드는게 좋을듯
+    const lecture = await this.getLectureInfo(
+      Number(main_lecture_id),
+      Number(prof_id),
+    ); //1곱하지말고 parseInt pipe만드는게 좋을듯
+    console.log(lecture);
     const people = lecture.records.length;
     const found = await this.scoringRepository.findOne({
       where: {
